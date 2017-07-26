@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.study.www.mapper.PipiInfoMapper" >
+    <resultMap id="BaseResultMap" type="com.study.www.entity.PipiInfo" >
+        <result column="price_org" property="priceOrg" jdbcType="VARCHAR" />
+        <result column="price_typle" property="priceTyple" jdbcType="VARCHAR" />
+        <result column="orgin" property="origin" jdbcType="VARCHAR" />
+        <result column="price" property="price" jdbcType="FLOAT" />
+        <result column="price_unit" property="priceUnit" jdbcType="VARCHAR" />
+        <result column="spec" property="spec" jdbcType="VARCHAR" />
+        <result column="time" property="time" jdbcType="VARCHAR" />
+        <result column="class_name" property="className" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        price_org,price_typle,orgin,price,price_unit,spec,`time`,class_name,create_time
+    </sql>
+
+    <insert id="insert" parameterType="java.util.List" >
+        INSERT INTO
+        dzsp_pipi_info
+        (
+        <include refid="Base_Column_List" />
+        )
+        VALUES
+        <foreach collection="list" item="item" open="" close="" separator=",">
+            ( #{item.priceOrg,jdbcType=VARCHAR},
+            #{item.priceTyple,jdbcType=VARCHAR},
+            #{item.origin,jdbcType=VARCHAR},
+            #{item.price,jdbcType=FLOAT},
+            #{item.priceUnit,jdbcType=VARCHAR},
+            #{item.spec,jdbcType=VARCHAR},
+            #{item.time,jdbcType=VARCHAR},
+            #{item.className,jdbcType=VARCHAR},
+            date_format(now(),"%Y-%m-%d %H:%i:%s"))
+        </foreach>
+    </insert>
+
+</mapper>
