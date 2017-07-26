@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cnnnc.mapper.TransactionDataMapper" >
+    <resultMap id="BaseResultMap" type="com.cnnnc.entity.TransactionDataBean" >
+        <id column="code" property="code" jdbcType="VARCHAR" />
+        <result column="action_day" property="actionDay" jdbcType="VARCHAR" />
+        <result column="wind_code" property="windCode" jdbcType="VARCHAR" />
+        <result column="wind_time" property="time" jdbcType="VARCHAR" />
+        <result column="exchange_time" property="serverTime" jdbcType="VARCHAR" />
+        <result column="index" property="index" jdbcType="VARCHAR" />
+        <result column="price" property="price" jdbcType="VARCHAR" />
+        <result column="volume" property="volume" jdbcType="VARCHAR" />
+        <result column="turnover" property="turnover" jdbcType="VARCHAR" />
+        <result column="BSFlag" property="BSFlag" jdbcType="VARCHAR" />
+        <result column="order_kind" property="orderKind" jdbcType="VARCHAR" />
+        <result column="function_code" property="functionCode" jdbcType="VARCHAR" />
+        <result column="ask_order" property="askOrder" jdbcType="VARCHAR" />
+        <result column="bid_order" property="bidOrder" jdbcType="VARCHAR" />
+        <result column="type" property="type" jdbcType="VARCHAR" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="gain_time" property="gainTime" jdbcType="VARCHAR" />
+    </resultMap>
+    
+    <sql id="Base_Column_List" >
+       code,action_day,wind_code,wind_time,exchange_time,`index`,price,volume,turnover,BSFlag,order_kind,function_code,ask_order,bid_order,`type`,`name`,create_time,gain_time
+    </sql>
+
+    <insert id="insert" parameterType="java.util.List" >
+       INSERT INTO 
+       		WIND_TDF_TRANSACTION_DATA
+        (
+        <include refid="Base_Column_List" />
+        )
+       	VALUES
+       <foreach collection="list" item="item" open="(" close=")" separator=",">
+           #{item.code,jdbcType=VARCHAR},
+           #{item.actionDay,jdbcType=VARCHAR},
+           #{item.windCode,jdbcType=VARCHAR},
+           #{item.time,jdbcType=VARCHAR},
+           #{item.serverTime,jdbcType=VARCHAR},
+           #{item.index,jdbcType=VARCHAR},
+           #{item.price,jdbcType=VARCHAR},
+           #{item.volume,jdbcType=VARCHAR},
+           #{item.turnover,jdbcType=VARCHAR},
+           #{item.BSFlag,jdbcType=VARCHAR},
+           #{item.orderKind,jdbcType=VARCHAR},
+           #{item.functionCode,jdbcType=VARCHAR},
+           #{item.askOrder,jdbcType=VARCHAR},
+           #{item.bidOrder,jdbcType=VARCHAR},
+           #{item.type,jdbcType=VARCHAR},
+           #{item.name,jdbcType=VARCHAR},
+           date_format(now(),"%Y-%m-%d %H:%i:%s"),
+           #{item.gainTime,jdbcType=VARCHAR}
+       </foreach>
+
+    </insert>
+
+</mapper>
