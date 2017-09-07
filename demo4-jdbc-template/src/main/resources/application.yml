@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    url: jdbc:h2:C:\Users/mirror/Desktop/temp;AUTO_SERVER=TRUE
+    driver-class-name: org.h2.Driver
+    username: aaa
+    ##注意H2连接不需要输入密码
