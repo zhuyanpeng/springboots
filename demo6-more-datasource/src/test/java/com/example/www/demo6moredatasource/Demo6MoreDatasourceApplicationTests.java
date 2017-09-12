@@ -1,5 +1,6 @@
 package com.example.www.demo6moredatasource;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,13 +19,16 @@ public class Demo6MoreDatasourceApplicationTests {
 	}
 	@Autowired
 	@Qualifier("primaryJdbcTemplate")
-	protected JdbcTemplate jdbcTemplate;
+	protected JdbcTemplate jdbcTemplate1;
 	@Autowired
+	@Qualifier("secondaryJdbcTemplate")
 	protected  JdbcTemplate jdbcTemplate2;
 	@Before
 	public void setUp() {
-		jdbcTemplate1.update("DELETE  FROM  USER ");
-		jdbcTemplate2.update("DELETE  FROM  USER ");
+/*		jdbcTemplate1.update("DELETE  FROM  USER ");
+		jdbcTemplate2.update("DELETE  FROM  USER ");*/
+		jdbcTemplate1.execute("CREATE  TABLE user(id int(11),name VARCHAR(32) ,age int(11));");
+		jdbcTemplate2.execute("CREATE  TABLE user(id int(11),name VARCHAR(32) ,age int(11));");
 	}
 	@Test
 	public void test() throws Exception {

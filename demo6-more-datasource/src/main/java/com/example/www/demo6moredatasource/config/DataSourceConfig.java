@@ -26,8 +26,8 @@ public class DataSourceConfig {
     }
 
     @Bean(name = "secondaryDataSource")
-    @Qualifier("secondaryDataSource")
-    @Primary
+    @Qualifier("secondaryDataSource")//根据名字注入如果autowrid书写的名字是等于Qualifier的话会被注
+    @Primary//必须使用的 在被autoWrid调用时如果有两个compment的话加上这个的会被首选
     @ConfigurationProperties(prefix = "spring.datasource.secondary")
     public  DataSource secondaryDataSource(){
         return DataSourceBuilder.create().build();
@@ -36,7 +36,7 @@ public class DataSourceConfig {
     public JdbcTemplate primaryJdbcTemplate(@Qualifier("primaryDataSource") DataSource dataSource){
         return new JdbcTemplate(dataSource);
     }
-    @Bean(name="secondaryDataSource")
+    @Bean(name="secondaryJdbcTemplate")
     public JdbcTemplate secondaryJdbcTemplate(@Qualifier("secondaryDataSource") DataSource dataSource){
         return new JdbcTemplate(dataSource);
     }
