@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.study.www.demo7mybatismore.domain.cnnnc.mapper.UserMapper">
+    <select id="findByAccount" resultType="java.util.Map" parameterType="java.lang.String">
+     select account,name from SYS_USER_INFO where
+     account=#{account,jdbcType=VARCHAR}
+    </select>
+</mapper>

@@ -1,0 +1,25 @@
+debug: true
+spring:
+  datasource:
+    dbstk:
+      url: jdbc:mysql://10.120.10.5:3306/dbstk?useUnicode=true&characterEncoding=utf8
+      username: qtdep
+      password: 123456
+      driver-class-name: com.mysql.jdbc.Driver
+      maxWait: 120000
+      type: com.alibaba.druid.pool.DruidDataSource
+      maxActive: 150
+    cnnnc:
+      url: jdbc:mysql://192.168.154.129:3306/Demo3?useUnicode=true&characterEncoding=utf8
+      username: mirrors
+      password: 123456
+      driver-class-name: com.mysql.jdbc.Driver
+      maxWait: 120000
+      type: com.alibaba.druid.pool.DruidDataSource
+      maxActive: 150
+  output:
+    ansi:
+      enabled: detect
+logging:
+  file: app.log
+  path: /logger
