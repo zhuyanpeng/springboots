@@ -18,7 +18,6 @@ import javax.sql.DataSource;
 @Configuration
 public class DataSourceConfig {
     @Bean(name="dbstkDataSource")
-    @Qualifier("dbstkDataSource")
     @Primary
     @ConfigurationProperties(prefix = "spring.datasource.dbstk")
     public DataSource dbstkDataSource(){
@@ -26,7 +25,6 @@ public class DataSourceConfig {
     }
 
     @Bean(name="cnnncDataSource")
-    @Qualifier("cnnncDataSource")
     @ConfigurationProperties(prefix = "spring.datasource.cnnnc")
     public DataSource cnnncDataSource(){
         return DataSourceBuilder.create().build();
