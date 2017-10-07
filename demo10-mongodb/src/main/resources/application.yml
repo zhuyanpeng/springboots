@@ -1,0 +1,4 @@
+spring:
+    data:
+        mongodb:
+          uri: mongodb://test:123123@120.24.62.63:27017/test
