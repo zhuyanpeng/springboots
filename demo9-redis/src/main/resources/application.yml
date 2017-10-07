@@ -1,0 +1,22 @@
+spring:
+  redis:
+  ##库的选择
+    database: 1
+  ##IP
+    host: 192.168.147.128
+  ##端口
+    port: 6379
+  ##密码
+    password: 123456
+  ##池相关
+    pool:
+    ##最大连接数
+      max-active: 18
+      ##最大等待时间负数代表无限制等待
+      max-wait: -1
+      ##最大空闲链接
+      max-idle: 8
+      ##最小空闲链接
+      min-idle: 0
+      ##链接超时描述
+    timeout: 0
