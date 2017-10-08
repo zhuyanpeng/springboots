@@ -1,0 +1,9 @@
+spring:
+  http:
+    encoding:
+      force: true #是否强制配置的编码
+      charset: utf-8
+      enabled: true
+server:
+  tomcat:
+    uri-encoding: UTF-8
