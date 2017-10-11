@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--等级:trace<debug<info<warn<error<fatal-->
+<Configuration status="WARN">
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT" follow="true">
+            <PatternLayout>
+                <pattern>%d %p %C{1.} [%t] %m%n</pattern>
+            </PatternLayout>
+        </Console>
+        <!-- 按日期每天生成log文件 -->
+        <RollingFile name="RollingFile" fileName="temp/CL_BATCH.log"
+                     filePattern="logs/CL_BATCH-%d{yyyy-MM-dd}.log">
+            <PatternLayout pattern="%d %p %C{1.} [%t] %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1"/>
+            </Policies>
+
+            <!-- log文件只打印error级别信息 -->
+            <Filters>
+                <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <!-- 输出info级别信息 -->
+        <Root level="info">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="RollingFile" />
+            <AppenderRef ref="File"/><!--輸出到文件-->
+        </Root>
+    </Loggers>
+</Configuration>
