@@ -99,6 +99,7 @@ public class WebLogAspect {
         System.out.println("执行切入点之后............");
         return String.valueOf(proceed+"新的風暴已經出現");//在此将被处理过的回参Proceed给加工处理之后传出
     }
+
     @Around(value = "webLog()")
     @Order(1)
     public Object doAround1(ProceedingJoinPoint joinPoint) throws  Throwable{
