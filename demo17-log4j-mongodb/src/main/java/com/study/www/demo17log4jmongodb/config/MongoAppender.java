@@ -17,13 +17,13 @@ import org.springframework.context.annotation.Configuration;
  * @date : 2017/10/12    18:21
  **/
 /*AppenderSkeleton用来对log4j进行扩展在此引入上个新的参数分别是connectionUrl,databaseName,collectionName所以log4j.properties也可以配置这三个了*/
-
 public class MongoAppender extends AppenderSkeleton{
-    private MongoClient mongoClient; //mongodb的链接客户端
+   private MongoClient mongoClient; //mongodb的链接客户端
     private MongoDatabase mongoDatabase;//日志记录的数据库
     private MongoCollection<BasicDBObject> mongoCollection;//日志记录集合
 
-    private String connectionUrl; //mongodb的地址
+    private String host; //mongodb的地址
+    private int port; //mongodb的端口
     private String databaseName; //数据库名
     private String collectionName; //集合名
 
@@ -43,21 +43,13 @@ public class MongoAppender extends AppenderSkeleton{
     @Override
     protected void append(LoggingEvent event) {
         if (mongoDatabase==null){
-            MongoClientURI mongoClientURI = new MongoClientURI(connectionUrl);
-            mongoClient = new MongoClient(mongoClientURI);
+            mongoClient = new MongoClient(host,port);
             mongoDatabase = mongoClient.getDatabase(databaseName);
             mongoCollection = mongoDatabase.getCollection(collectionName, BasicDBObject.class);
         }
         mongoCollection.insertOne((BasicDBObject)event.getMessage());
     }
 
-    public String getConnectionUrl() {
-        return connectionUrl;
-    }
-
-    public void setConnectionUrl(String connectionUrl) {
-        this.connectionUrl = connectionUrl;
-    }
 
     public String getDatabaseName() {
         return databaseName;
@@ -73,5 +65,21 @@ public class MongoAppender extends AppenderSkeleton{
 
     public void setCollectionName(String collectionName) {
         this.collectionName = collectionName;
+    }
+
+    public String getHost() {
+        return host;
+    }
+
+    public void setHost(String host) {
+        this.host = host;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
     }
 }

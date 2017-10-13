@@ -31,7 +31,7 @@ import java.util.Map;
 @Configuration
 public class WebLogAspect {
 
-    private Logger logger = Logger.getLogger("mongodb");
+    private Logger logger = Logger.getLogger("MongoDB");
 
     @Pointcut("execution(public * com.study.www.demo17log4jmongodb.web..*(..))")
     public void webLog(){}
