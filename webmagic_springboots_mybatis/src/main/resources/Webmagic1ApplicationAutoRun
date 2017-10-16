@@ -20,7 +20,7 @@ import java.util.Date;
 @MapperScan(basePackages = "com.study.www.mapper")
 //CommandLineRunner定义初始化完毕之后进行的加载
 @EnableScheduling
-public class Webmagic1Application {
+public class Webmagic1ApplicationAutoRun {
 	private  static  final  String url="http://www.100ppi.com/price/";
 	@Autowired
 	DzspProcessorService dzspRepoPageProcessor;
@@ -39,6 +39,6 @@ public class Webmagic1Application {
 	}
 
 	public static void main(String[] args) {
-		SpringApplication.run(Webmagic1Application.class, args);
+		SpringApplication.run(Webmagic1ApplicationAutoRun.class, args);
 	}
 }

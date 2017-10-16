@@ -1,6 +1,7 @@
 package com.study.www.mapper;
 
 import com.study.www.entity.PipiInfoSimple;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -12,4 +13,5 @@ import java.util.List;
  **/
 public interface PipiInfoSimpleMapper {
     void insert(List<PipiInfoSimple> list);
+    int queryCountByTime(@Param("time") String time);
 }

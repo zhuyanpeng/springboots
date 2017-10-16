@@ -31,5 +31,9 @@
             date_format(now(),"%Y-%m-%d %H:%i:%s"))
         </foreach>
     </insert>
-
+    <select id="queryCountByTime" resultType="java.lang.Integer" parameterType="java.lang.String">
+     select count(1)
+          from dzsp_pipi_simple_info
+            where time=#{time,jdbcType=VARCHAR}
+    </select>
 </mapper>

@@ -26,7 +26,7 @@ public class PipiServiceImpl implements PipiService{
     private PipiInfoSimpleMapper pipiInfoSimpleMapper;
     @Override
     public void savePipiData(List<PipiInfo> pipiInfos, List<PipiInfoSimple> pipiInfoSimples) {
-         pipiInfoMapper.insert(pipiInfos);
+        pipiInfoMapper.insert(pipiInfos);
         pipiInfoSimpleMapper.insert(pipiInfoSimples);
     }
 }
