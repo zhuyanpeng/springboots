@@ -37,11 +37,11 @@ public class PipiInfoline implements Pipeline {
                }else{
                    PipiInfoSimple pipiInfoSimple = new PipiInfoSimple();
                    pipiInfoSimple.setPriceSum(pipiInfo.getPrice());
-                   pipiInfoSimple.setPriceUnit(pipiInfo.getPriceUnit());
-                   pipiInfoSimple.setClassName(pipiInfo.getClassName());
-                   pipiInfoSimple.setTime(pipiInfo.getTime());
+                   pipiInfoSimple.setPriceUnit(pipiInfo.getPriceUnit().trim());
+                   pipiInfoSimple.setClassName(pipiInfo.getClassName().trim());
+                   pipiInfoSimple.setTime(pipiInfo.getTime().trim());
                    pipiInfoSimple.setOpecNum(1);
-                   pipiInfoSimple.setSpec(pipiInfo.getSpec());
+                   pipiInfoSimple.setSpec(pipiInfo.getSpec().trim());
                    stringStringHashMap.put(i,pipiInfoSimple);
                }
            }

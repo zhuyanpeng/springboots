@@ -45,18 +45,18 @@ public class PipiUtils {
                 }
             }
             pipiInfo= new PipiInfo();
-            pipiInfo.setClassName(className);
+            pipiInfo.setClassName(className.trim());
             int timeCor=hashMapTables.get("发布时间")<0?hashMapTables.get("时间"):hashMapTables.get("发布时间");
             i=resultDay.size()==0?nodes.size():i;
             //补位
             PipiUtils.checkTimeCodes(timeCor,hashSetBodyNodes);
             String time = hashSetBodyNodes.get(timeCor).toString();
             if (resultDay.size()==0||resultDay.contains(time)){
-                pipiInfo.setTime(time);
+                pipiInfo.setTime(time.trim());
                 int priceOrgCor=hashMapTables.get("报价机构")<0?hashMapTables.get("报价单位"):hashMapTables.get("报价机构");
-                pipiInfo.setPriceOrg(hashSetBodyNodes.get(priceOrgCor).childNode(1).childNode(0).toString());
+                pipiInfo.setPriceOrg(hashSetBodyNodes.get(priceOrgCor).childNode(1).childNode(0).toString().trim());
                 int priceTypleCor=hashMapTables.get("报价类型")<0?hashMapTables.get("价格类型"):hashMapTables.get("报价类型");
-                pipiInfo.setPriceTyple(hashSetBodyNodes.get(priceTypleCor).toString());
+                pipiInfo.setPriceTyple(hashSetBodyNodes.get(priceTypleCor).toString().trim());
                 int priceCor=hashMapTables.get("报价")<0?hashMapTables.get("价格"):hashMapTables.get("报价");
                 String priceCorStr = hashSetBodyNodes.get(priceCor).toString();
                 String priceUnit=null;
@@ -72,7 +72,7 @@ public class PipiUtils {
                     priceUnit="美元/"+split[1];
                 }
                 pipiInfo.setPrice(priceCore);
-                pipiInfo.setPriceUnit(priceUnit);
+                pipiInfo.setPriceUnit(priceUnit.trim());
                 int specCor=hashMapTables.get("规格")<0?hashMapTables.get("商品名称"):hashMapTables.get("规格");
                 String specCorStr= hashSetBodyNodes.get(specCor).childNodes().size() <= 0 ?
                         hashSetBodyNodes.get(specCor).toString() : hashSetBodyNodes.get(specCor).childNodes().get(0).toString();
@@ -80,14 +80,14 @@ public class PipiUtils {
                 if (specCorStr.contains("<div")){
                     specCorStr="空";
                 }
-                pipiInfo.setSpec(specCorStr);
+                pipiInfo.setSpec(specCorStr.trim());
                 int originCor=hashMapTables.get("产地")<0?hashMapTables.get("产地"):hashMapTables.get("产地");
                 String originCorStr = hashSetBodyNodes.get(originCor).toString();
                 originCorStr= originCorStr.split("-").length!=3?originCorStr:"空";
-                pipiInfo.setOrigin(originCorStr);
+                pipiInfo.setOrigin(originCorStr.trim());
                 Node originCorNode = hashSetBodyNodes.get(originCor);
                 String orginCorStr= (originCorNode.childNodes()!=null&&originCorNode.childNodes().size()!=0)?hashSetBodyNodes.get(originCor).childNode(0).toString():"空";
-                pipiInfo.setOrigin(orginCorStr);
+                pipiInfo.setOrigin(orginCorStr.trim());
                 pipiInfos.add(pipiInfo);
             }
         }

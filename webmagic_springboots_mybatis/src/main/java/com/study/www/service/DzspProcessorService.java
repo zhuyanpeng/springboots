@@ -1,8 +1,11 @@
 package com.study.www.service;
 
 import com.study.www.entity.PipiInfo;
+import com.study.www.mapper.PipiInfoSimpleMapper;
 import com.study.www.utils.PipiUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
@@ -24,10 +27,13 @@ import java.util.*;
 @Component
 @PropertySource("classpath:application.properties")
 public class DzspProcessorService implements PageProcessor{
+    private Logger logger=Logger.getLogger(this.getClass());
     @Value("${dzsp.resultDay}")
     private List<String> resultDay;
     @Value("${dzsp.url}")
     private String url;
+    @Autowired
+    private PipiInfoSimpleMapper pipiInfoSimpleMapper;
 
     private void setResultDay(List<String> resultDay) {
         if (StringUtils.isNotBlank(resultDay.get(0).split(";")[0])) {
@@ -70,6 +76,11 @@ public class DzspProcessorService implements PageProcessor{
     public void process(Page page) {
         //配置分析
        setResultDay(resultDay);
+       //是否有数据有的话直接杀死
+       if(isExistData(resultDay)){
+            logger.warn("数据库中已存在！系统关闭!");
+           System.exit(0);
+       }
         List<String> all =new ArrayList<>();
         for (String s : page.getHtml().links().regex("(list-1+\\w{1}+-1.html)").all()) {
             all.add(url+s);
@@ -92,6 +103,17 @@ public class DzspProcessorService implements PageProcessor{
             page.putField("pipiInfos",pipiInfos);
         }
     }
+
+    private boolean isExistData(List<String> resultDay) {
+        for (String time : resultDay) {
+            int count = pipiInfoSimpleMapper.queryCountByTime(time);
+            if (count<10){
+                return false;
+            }
+        }
+        return true;
+    }
+
     //二级单品url抉择
     private static boolean regexSingleGoods(String url,String regexUrl){
         int l = regexUrl.indexOf(url + "plist-")==0?(url+"plist-").length():-1;
