@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.study.www.mapper.PipiUpDownEntityMapper" >
+    <resultMap id="BaseResultMap" type="com.study.www.entity.PipiUpDownEntity" >
+        <result column="goods_name" property="goodsName" jdbcType="VARCHAR" />
+        <result column="time" property="time" jdbcType="VARCHAR" />
+        <result column="trade" property="trade" jdbcType="VARCHAR" />
+        <result column="price" property="price" jdbcType="FLOAT" />
+        <result column="unit" property="unit" jdbcType="VARCHAR" />
+        <result column="dayChg" property="dayChg" jdbcType="VARCHAR" />
+        <result column="monChg" property="monChg" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        goods_name,time,trade,price,unit,dayChg,`monChg`,create_time
+    </sql>
+
+    <insert id="insert" parameterType="java.util.List" >
+        INSERT INTO
+        dzsp_pipiupdown_info
+        (
+        <include refid="Base_Column_List" />
+        )
+        VALUES
+        <foreach collection="list" item="item" open="" close="" separator=",">
+            ( #{item.goodsName,jdbcType=VARCHAR},
+            #{item.time,jdbcType=VARCHAR},
+            #{item.trade,jdbcType=VARCHAR},
+            #{item.price,jdbcType=FLOAT},
+            #{item.unit,jdbcType=VARCHAR},
+            #{item.dayChg,jdbcType=VARCHAR},
+            #{item.monChg,jdbcType=VARCHAR},
+            date_format(now(),"%Y-%m-%d %H:%i:%s"))
+        </foreach>
+    </insert>
+</mapper>

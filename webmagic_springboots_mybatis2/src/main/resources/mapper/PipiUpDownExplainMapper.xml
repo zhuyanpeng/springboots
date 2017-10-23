@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.study.www.mapper.PipiUpDownExplainMapper" >
+    <resultMap id="BaseResultMap" type="com.study.www.entity.PipiUpDownExplain" >
+        <id column="time" property="time" jdbcType="VARCHAR" />
+        <id column="explain" property="explain" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        time,explain,create_time
+    </sql>
+    <insert id="insert" parameterType="java.util.List" >
+        INSERT INTO
+        dzsp_pipiupdown_explain
+        (
+        <include refid="Base_Column_List"/>
+        )
+        VALUES
+            #{item.time,jdbcType=VARCHAR},
+            #{item.explain,jdbcType=VARCHAR},
+            date_format(now(),"%Y-%m-%d %H:%i:%s")
+    </insert>
+    <select id="queryCountByTime" resultType="java.lang.Integer" parameterType="java.lang.String">
+     select count(1)
+          from dzsp_pipiupdown_explain
+            where time=#{time,jdbcType=VARCHAR}
+    </select>
+</mapper>
