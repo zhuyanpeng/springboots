@@ -25,13 +25,20 @@ public class PipiUtils {
             return null;
         }
         List<Selectable> tables = selectable.xpath("/table/tbody/tr[1]/").nodes();
-        ArrayList<PipiUpDownEntity> pipiUpDownEntities = new ArrayList<>();
+
         //标题
         Map<Integer, String> order = new HashMap<>();
         List<Selectable> titleTabls = tables.get(0).nodes();
         for (int i = 0; i < titleTabls.size(); i++) {
-            order.put(i,titleTabls.get(i).sp)
+            order.put(i,titleTabls.get(i).toString().split("b>")[1].split("<b")[0]);
         }
+        //假设上面是正确的那么上面就应该是["商品",0],["行业",1]
+        //去获得内容
+        tables = selectable.xpath("/table/tbody/tr[2]/").nodes();
+        for (Selectable table : tables) {
+            table.xpath("tr")
+        }
+        ArrayList<PipiUpDownEntity> pipiUpDownEntities = new ArrayList<>();
         return null;
     }
     public static void checkTimeCodes(int timePoi,LinkedList<Node> hashSetBodyNodes){
