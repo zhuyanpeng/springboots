@@ -1,14 +1,16 @@
 package com.study.www.entity;
 
+import java.util.List;
+
 /**
  * PipiUpDownEntity: 大宗商品涨跌榜bean
  *
  * @auther : Administrator.zhuyanpeng
  * @date : 2017/10/23    14:18
  **/
-public class PipiUpDownEntity {
+public class PipiUpDownEntity extends Pipi{
     private String time;//时间
-    private String goodsName;//商品名
+    private String goodsName;//商品
     private String trade;//行业
     private String price;//价格
     private String unit;//单位
@@ -26,6 +28,16 @@ public class PipiUpDownEntity {
         this.unit = unit;
         this.dayChg = dayChg;
         this.monChg = monChg;
+    }
+
+    public PipiUpDownEntity(List<String> list) {
+        this.goodsName = list.get(0);
+        this.trade = list.get(1);
+        this.price = list.get(2);
+        this.unit = list.get(3);
+        this.dayChg = list.get(4);
+        this.monChg = list.get(5);
+        this.time = list.get(6);
     }
 
     public void setTime(String time) {

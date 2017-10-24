@@ -3,7 +3,8 @@ package com.study.www.service;
 import com.study.www.mapper.PipiUpDownExplainMapper;
 import com.study.www.utils.PipiUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -26,13 +27,17 @@ import java.util.*;
 @Component
 @PropertySource("classpath:application.properties")
 public class DzspProcessorService implements PageProcessor{
-    private Logger logger=Logger.getLogger(this.getClass());
+    private Logger logger= LoggerFactory.getLogger(this.getClass());
     @Value("${dzsp.resultDay}")
     private List<String> resultDay;
+    @Autowired
+    PipiUtils pipiUtils;
     @Value("${dzsp.url}")
     private String url;
     @Autowired
     private PipiUpDownExplainMapper pipiUpDownExplainMapper;
+
+    public static String KEY="pipis";
 
     private void setResultDay(List<String> resultDay) {
         if (StringUtils.isNotBlank(resultDay.get(0).split(";")[0])) {
@@ -73,36 +78,18 @@ public class DzspProcessorService implements PageProcessor{
 
     @Override
     public void process(Page page) {
-        //配置分析
-       setResultDay(resultDay);
-       //是否有数据有的话直接杀死
-       if(isExistData(resultDay)){
-            logger.warn("数据库中已存在！系统关闭!");
-           System.exit(0);
-       }
-        List<String> all =new ArrayList<>();
-       //此处的查找方式
-        //1、首先通过XPath去找到期货篇的div组
-        //2、根据正则:http://top.100ppi.com/\w[\w,]*/detail-day---\w[\w,]*.html 去查找所有规则符合http://top.100ppi.com/任意/detail-day---任意.html的
-        page.addTargetRequests(page.getHtml().xpath("/html/body/div[9]/div[1]/div[2]").links().regex("http://top.100ppi.com/\\w[\\w,]*/detail-day---\\w[\\w,]*.html").all());
-        Selectable selectable = page.getHtml().xpath("/html/body/div[9]/div[1]/div[2]/table");
-        PipiUtils.getPiPiInfosBySelectable(selectable,"",resultDay);
-        //一级目录 获得所有"更多"
-       /* if (page.getUrl().regex(url+"(list-1+\\w{1}+-1.html)").match()){
-            //下级目录
-            all.clear();
-            for (String s : page.getHtml().xpath("//html/body/div[8]/div[2]/div/div[@class='p-cate-a']/div[2]/ul/li/a/@href").all()) {
-                all.add(url+s);
-            }
-            page.addTargetRequests(all);
-        }*/
-        //二级目录展现所有单品
-        /*if (regexSingleGoods(url,page.getUrl().get())){
-            String  className= page.getHtml().xpath("/html/body/div[8]/div[1]/a[4]/span/text()").toString();
-            Selectable selectable = page.getHtml().xpath("/html/body/div[8]/div[5]/div[1]/table[@class='lp-table mb15']/").xpath("/tbody/");
-            List<PipiInfo> pipiInfos = PipiUtils.getPiPiInfosBySelectable(selectable,className,resultDay);
-            page.putField("pipiInfos",pipiInfos);
-        }*/
+        try {
+            List<String> all =new ArrayList<>();
+            //此处的查找方式
+            //1、首先通过XPath去找到期货篇的div组
+            //2、根据正则:http://top.100ppi.com/\w[\w,]*/detail-day---\w[\w,]*.html 去查找所有规则符合http://top.100ppi.com/任意/detail-day---任意.html的
+            page.addTargetRequests(page.getHtml().xpath("/html/body/div[9]/div[1]/div[2]").links().regex("http://top.100ppi.com/\\w[\\w,]*/detail-day---\\w[\\w,]*.html").all());
+            Selectable selectable = page.getHtml();
+            Map<String, Object> pipis = pipiUtils.getPiPiInfosBySelectable(selectable, resultDay);
+            page.putField(DzspProcessorService.KEY,pipis);
+        } catch (Exception e) {
+            logger.error("DzspProcessorService.process"+e.getMessage());
+        }
     }
 
     private boolean isExistData(List<String> resultDay) {
@@ -115,17 +102,6 @@ public class DzspProcessorService implements PageProcessor{
         return true;
     }
 
-    //二级单品url抉择
-    private static boolean regexSingleGoods(String url,String regexUrl){
-        int l = regexUrl.indexOf(url + "plist-")==0?(url+"plist-").length():-1;
-        int r = regexUrl.indexOf("-1.html");
-        if (l>0&&r>0){
-            String str =  regexUrl.substring(l,r);
-            return Integer.valueOf(str)>19;
-        }
-        return false;
-
-    }
 
     @Override
     public Site getSite() {
@@ -133,6 +109,13 @@ public class DzspProcessorService implements PageProcessor{
     }
 
     public void start(DzspProcessorService processor, PipiInfoline pipiInfoline) {
+        //配置分析
+        setResultDay(resultDay);
+        //是否有数据有的话直接杀死
+        if(isExistData(resultDay)){
+            logger.warn("数据库中已存在！系统关闭!");
+            System.exit(0);
+        }
         Spider.create(processor)
                 .addUrl(url)
                 .addPipeline(pipiInfoline)

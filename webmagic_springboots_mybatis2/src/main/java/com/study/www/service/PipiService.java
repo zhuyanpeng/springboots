@@ -1,5 +1,6 @@
 package com.study.www.service;
 
+import com.study.www.entity.PipiUpDownEntity;
 import com.study.www.entity.PipiUpDownExplain;
 import com.study.www.mapper.PipiUpDownExplainMapper;
 
@@ -12,5 +13,5 @@ import java.util.List;
  * @date :  2017/7/25    18:01
  **/
 public interface PipiService {
-    public void savePipiData(List<PipiUpDownExplainMapper> pipiUpDownExplainMappers, PipiUpDownExplain pipiUpDownExplain);
+    public void savePipiData(List<PipiUpDownEntity> pipiUpDownEntitys, PipiUpDownExplain pipiUpDownExplain);
 }

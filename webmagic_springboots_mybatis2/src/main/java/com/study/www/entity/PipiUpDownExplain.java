@@ -6,9 +6,18 @@ package com.study.www.entity;
  * @auther : Administrator.zhuyanpeng
  * @date : 2017/10/23    14:36
  **/
-public class PipiUpDownExplain {
+public class PipiUpDownExplain extends Pipi{
     private String time;
+    private String rankName;
     private String explain;
+
+    public String getRankName() {
+        return rankName;
+    }
+
+    public void setRankName(String rankName) {
+        this.rankName = rankName;
+    }
 
     public String getTime() {
         return time;

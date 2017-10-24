@@ -1,5 +1,6 @@
 package com.study.www.service.Impl;
 
+import com.study.www.entity.PipiUpDownEntity;
 import com.study.www.entity.PipiUpDownExplain;
 import com.study.www.mapper.PipiUpDownEntityMapper;
 import com.study.www.mapper.PipiUpDownExplainMapper;
@@ -22,9 +23,11 @@ public class PipiServiceImpl implements PipiService{
     private PipiUpDownEntityMapper pipiUpDownEntityMapper;
     @Autowired
     private PipiUpDownExplainMapper pipiUpDownExplainMapper;
+
+
     @Override
-    public void savePipiData(List<PipiUpDownExplainMapper> pipiUpDownExplainMappers, PipiUpDownExplain pipiUpDownExplain) {
-        pipiUpDownEntityMapper.insert(pipiUpDownExplainMappers);
+    public void savePipiData(List<PipiUpDownEntity> pipiUpDownEntitys, PipiUpDownExplain pipiUpDownExplain) {
+        pipiUpDownEntityMapper.insert(pipiUpDownEntitys);
         pipiUpDownExplainMapper.insert(pipiUpDownExplain);
     }
 }

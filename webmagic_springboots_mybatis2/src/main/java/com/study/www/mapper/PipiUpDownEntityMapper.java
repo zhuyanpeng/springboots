@@ -1,5 +1,6 @@
 package com.study.www.mapper;
 
+import com.study.www.entity.PipiUpDownEntity;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -12,5 +13,5 @@ import java.util.List;
  **/
 @Repository
 public interface PipiUpDownEntityMapper {
-    void insert(List<PipiUpDownExplainMapper> list);
+    void insert(List<PipiUpDownEntity> list);
 }

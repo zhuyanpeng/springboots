@@ -5,14 +5,14 @@
         <result column="goods_name" property="goodsName" jdbcType="VARCHAR" />
         <result column="time" property="time" jdbcType="VARCHAR" />
         <result column="trade" property="trade" jdbcType="VARCHAR" />
-        <result column="price" property="price" jdbcType="FLOAT" />
+        <result column="price" property="price" jdbcType="VARCHAR" />
         <result column="unit" property="unit" jdbcType="VARCHAR" />
         <result column="dayChg" property="dayChg" jdbcType="VARCHAR" />
         <result column="monChg" property="monChg" jdbcType="VARCHAR" />
     </resultMap>
 
     <sql id="Base_Column_List" >
-        goods_name,time,trade,price,unit,dayChg,`monChg`,create_time
+        goods_name,`time`,trade,price,unit,dayChg,`monChg`,create_time
     </sql>
 
     <insert id="insert" parameterType="java.util.List" >
@@ -23,10 +23,11 @@
         )
         VALUES
         <foreach collection="list" item="item" open="" close="" separator=",">
-            ( #{item.goodsName,jdbcType=VARCHAR},
+            (
+            #{item.goodsName,jdbcType=VARCHAR},
             #{item.time,jdbcType=VARCHAR},
             #{item.trade,jdbcType=VARCHAR},
-            #{item.price,jdbcType=FLOAT},
+            #{item.price,jdbcType=VARCHAR},
             #{item.unit,jdbcType=VARCHAR},
             #{item.dayChg,jdbcType=VARCHAR},
             #{item.monChg,jdbcType=VARCHAR},

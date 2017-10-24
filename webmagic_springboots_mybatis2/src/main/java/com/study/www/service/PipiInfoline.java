@@ -1,5 +1,8 @@
 package com.study.www.service;
 
+import com.study.www.entity.PipiUpDownEntity;
+import com.study.www.entity.PipiUpDownExplain;
+import com.study.www.utils.PipiUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import us.codecraft.webmagic.ResultItems;
@@ -16,47 +19,17 @@ import java.util.*;
  **/
 @Component
 public class PipiInfoline implements Pipeline {
+
     @Autowired
     PipiService pipiService;
     @Override
     public void process(ResultItems resultItems, Task task) {
-        System.out.println(resultItems.toString());
-       /* List<PipiInfo> pipiInfos=(List<PipiInfo>)resultItems.get("pipiInfos");
-        HashMap<Integer,PipiInfoSimple> stringStringHashMap = new HashMap<>();//hashCode=AVG,date,className
-       if (pipiInfos!=null&&pipiInfos.size()>0){
-           for (PipiInfo pipiInfo : pipiInfos) {
-               int i = pipiInfo.hashCode();
-               if (stringStringHashMap.containsKey(i)){
-                   PipiInfoSimple pipiSimple = stringStringHashMap.get(i);
-                   int quoNum = pipiSimple.getOpecNum();
-                   pipiSimple.setOpecNum(++quoNum);
-                   float priceSum = pipiSimple.getPriceSum();
-                   pipiSimple.setPriceSum( priceSum+pipiInfo.getPrice());
-                   stringStringHashMap.put(i,pipiSimple);
-               }else{
-                   PipiInfoSimple pipiInfoSimple = new PipiInfoSimple();
-                   pipiInfoSimple.setPriceSum(pipiInfo.getPrice());
-                   pipiInfoSimple.setPriceUnit(pipiInfo.getPriceUnit().trim());
-                   pipiInfoSimple.setClassName(pipiInfo.getClassName().trim());
-                   pipiInfoSimple.setTime(pipiInfo.getTime().trim());
-                   pipiInfoSimple.setOpecNum(1);
-                   pipiInfoSimple.setSpec(pipiInfo.getSpec().trim());
-                   stringStringHashMap.put(i,pipiInfoSimple);
-               }
-           }
-           //价格四舍五入
-           for (Integer integer : stringStringHashMap.keySet()) {
-               float avgPrice = (stringStringHashMap.get(integer).getPriceSum()) / (stringStringHashMap.get(integer).getOpecNum());
-               //小数部分
-               float deci = avgPrice-(int)avgPrice;
-               deci =Float.parseFloat(String.valueOf(Math.round(deci * 1000) * 0.001d)) ;
-               stringStringHashMap.get(integer).setAvgPrice(avgPrice+deci);
-           }
-           ArrayList<PipiInfoSimple> pipiInfoSimples = new ArrayList<>();
-           for (PipiInfoSimple pipiInfoSimple : stringStringHashMap.values()) {
-               pipiInfoSimples.add(pipiInfoSimple);
-           }
-           pipiService.savePipiData(pipiInfos,pipiInfoSimples);
-       }*/
+        Object pipisObj = resultItems.get(DzspProcessorService.KEY);
+        if (pipisObj!=null){
+            if (pipisObj instanceof Map){
+                Map<String, Object> pipis=(Map<String, Object>)pipisObj;
+                pipiService.savePipiData((List<PipiUpDownEntity>)pipis.get(PipiUtils.PIPIUPDOWNENTITY),(PipiUpDownExplain)pipis.get(PipiUtils.PIPIUPDOWNEXPLAIN));
+            }
+        }
     }
 }
