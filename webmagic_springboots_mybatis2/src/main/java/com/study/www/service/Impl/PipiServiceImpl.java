@@ -6,7 +6,10 @@ import com.study.www.mapper.PipiUpDownEntityMapper;
 import com.study.www.mapper.PipiUpDownExplainMapper;
 import com.study.www.service.PipiService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -24,10 +27,17 @@ public class PipiServiceImpl implements PipiService{
     @Autowired
     private PipiUpDownExplainMapper pipiUpDownExplainMapper;
 
-
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     @Override
-    public void savePipiData(List<PipiUpDownEntity> pipiUpDownEntitys, PipiUpDownExplain pipiUpDownExplain) {
-        pipiUpDownEntityMapper.insert(pipiUpDownEntitys);
+    public void  savePipiData(List<PipiUpDownEntity> pipiUpDownEntitys, PipiUpDownExplain pipiUpDownExplain) {
         pipiUpDownExplainMapper.insert(pipiUpDownExplain);
+        //判断数据是否存在
+        for (PipiUpDownEntity pipiUpDownEntity : pipiUpDownEntitys) {
+            int count=pipiUpDownEntityMapper.queryByEntity(pipiUpDownEntity);
+            if (count==0){
+                pipiUpDownEntityMapper.insert(pipiUpDownEntity);
+            }
+        }
     }
+
 }

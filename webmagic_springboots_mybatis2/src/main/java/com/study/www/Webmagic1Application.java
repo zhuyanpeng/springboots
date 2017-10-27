@@ -16,7 +16,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @MapperScan(basePackages = "com.study.www.mapper")
 //CommandLineRunner定义初始化完毕之后进行的加载
 public class Webmagic1Application implements CommandLineRunner {
-	private  static  final  String url="http://www.100ppi.com/price/";
 	@Autowired
 	DzspProcessorService dzspRepoPageProcessor;
 	@Autowired

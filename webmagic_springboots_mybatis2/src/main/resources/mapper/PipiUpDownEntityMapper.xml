@@ -15,23 +15,36 @@
         goods_name,`time`,trade,price,unit,dayChg,`monChg`,create_time
     </sql>
 
-    <insert id="insert" parameterType="java.util.List" >
+    <insert id="insert" parameterType="com.study.www.entity.PipiUpDownEntity" >
         INSERT INTO
         dzsp_pipiupdown_info
         (
         <include refid="Base_Column_List" />
         )
         VALUES
-        <foreach collection="list" item="item" open="" close="" separator=",">
             (
-            #{item.goodsName,jdbcType=VARCHAR},
-            #{item.time,jdbcType=VARCHAR},
-            #{item.trade,jdbcType=VARCHAR},
-            #{item.price,jdbcType=VARCHAR},
-            #{item.unit,jdbcType=VARCHAR},
-            #{item.dayChg,jdbcType=VARCHAR},
-            #{item.monChg,jdbcType=VARCHAR},
+            #{goodsName,jdbcType=VARCHAR},
+            #{time,jdbcType=VARCHAR},
+            #{trade,jdbcType=VARCHAR},
+            #{price,jdbcType=VARCHAR},
+            #{unit,jdbcType=VARCHAR},
+            #{dayChg,jdbcType=VARCHAR},
+            #{monChg,jdbcType=VARCHAR},
             date_format(now(),"%Y-%m-%d %H:%i:%s"))
-        </foreach>
     </insert>
+
+    <select id="queryByEntity" resultType="java.lang.Integer" parameterType="com.study.www.entity.PipiUpDownEntity">
+        select count(1)
+        from dzsp_pipiupdown_info
+        where
+        goods_name=#{goodsName,jdbcType=VARCHAR}
+        AND
+        time=#{time,jdbcType=VARCHAR}
+        AND
+        trade=#{trade,jdbcType=VARCHAR}
+        AND
+        price=#{price,jdbcType=VARCHAR}
+        AND
+        unit=#{unit,jdbcType=VARCHAR}
+    </select>
 </mapper>
