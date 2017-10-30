@@ -25,6 +25,7 @@ public class TeacherController {
     @GetMapping("")
     public List<TeacherDto> getTeacherList(){
         List<TeacherDto> teacherDtos = new ArrayList<>(map.values());
+
         return  teacherDtos;
     }
 }
