@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    url: jdbc:mysql://192.168.147.128/test?useUnicode=true&characterEncoding=utf-8
+    username: root
+    password: adminroot
+    driver-class-name: com.mysql.jdbc.Driver
+    maxWait: 120000
+    type: com.alibaba.druid.pool.DruidDataSource
+    maxActive: 150
+  jpa:
+    database: mysql
+    show-sql: true
+    properties:
+      hibernte:
+        connection:
+          charSet: utf-8
+        dialect: com.study.www.config.MySQL5DialectUTF8
+    hibernate:
+      ddl-auto: update
+      naming:
+        implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
