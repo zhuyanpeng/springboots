@@ -55,4 +55,36 @@ public class Demo21EhcacheApplicationTests {
 		System.out.println("第二次查询耗时:"+(new Date().getTime()-date1.getTime())+"["+mirror.toString()+"]");
 	}
 
+	//测试key的设定和缓存条件当第一个参数小于4时才被缓存
+	@Test
+	public void conditionTest(){
+		User byNameAndAccount = userRepository.findByNameAndAccount("测试110", "mirror110");
+		System.out.println(byNameAndAccount);
+		//检查缓存中是否已经缓存了
+		Cache.ValueWrapper valueWrapper = cacheManager.getCache("users").get("测试110");
+		System.out.println("查看缓存中的数据:"+(valueWrapper==null?"无数据":valueWrapper.get()));
+		byNameAndAccount = userRepository.findByNameAndAccount("测试1", "mirror1");
+		System.out.println(byNameAndAccount);
+		valueWrapper = cacheManager.getCache("users").get("测试1");
+		System.out.println("查看缓存中的数据:"+(valueWrapper==null?"无数据":valueWrapper.get()));
+	}
+	//测试输出参数 必须小于4位
+	@Test
+	public void unlessTest(){
+		User mirror18 = userRepository.findByIdAndAccount(20L, "mirror18");
+		System.out.println(mirror18);
+		//检查缓存中是否已经缓存了
+		Cache.ValueWrapper valueWrapper = cacheManager.getCache("users").get("mirror18");
+		System.out.println("查看缓存中的数据:"+(valueWrapper==null?"无数据":valueWrapper.get()));
+	}
+	//测试修改
+	@Test
+	public void putTest(){
+		User mirror18 = userRepository.findByAccount("mirror18");
+		System.out.println(mirror18);
+		userRepository.updateNameByAccount("mirror18","我被修改了");
+		Cache.ValueWrapper valueWrapper = cacheManager.getCache("users").get("mirror18");
+		System.out.println("查看缓存中的数据:"+(valueWrapper==null?"无数据":valueWrapper.get()));
+	}
+
 }
