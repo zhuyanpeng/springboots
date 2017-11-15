@@ -2,6 +2,7 @@ package com.study.www;
 
 import com.study.www.domain.User;
 import com.study.www.domain.UserRepository;
+import com.study.www.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,6 +13,7 @@ import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.support.SimpleValueWrapper;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
@@ -25,6 +27,9 @@ public class Demo21EhcacheApplicationTests {
 
 	@Autowired
 	CacheManager cacheManager;
+
+	@Autowired
+	UserService userService;
 
 	@Before
 	public void before(){
@@ -82,9 +87,26 @@ public class Demo21EhcacheApplicationTests {
 	public void putTest(){
 		User mirror18 = userRepository.findByAccount("mirror18");
 		System.out.println(mirror18);
-		userRepository.updateNameByAccount("mirror18","我被修改了");
+		mirror18.setName("一人我饮酒醉");
+		userService.updateUserByAccount(mirror18);
 		Cache.ValueWrapper valueWrapper = cacheManager.getCache("users").get("mirror18");
 		System.out.println("查看缓存中的数据:"+(valueWrapper==null?"无数据":valueWrapper.get()));
+		User mirror181 = userRepository.findByAccount("mirror18");
+		System.out.println(mirror181);
+	}
+
+	//测试删除
+	@Test
+	@Transactional
+	public void removeTest(){
+		User mirror18 = userRepository.findByAccount("mirror17");
+		System.out.println(mirror18);
+		Cache.ValueWrapper valueWrapper = cacheManager.getCache("users").get("mirror17");
+		System.out.println("查看缓存中的数据:"+(valueWrapper==null?"无数据":valueWrapper.get()));
+		User mirror181 = userService.removeByAccount("mirror17");
+		valueWrapper= cacheManager.getCache("users").get("mirror17");
+		System.out.println("查看缓存中的数据:"+(valueWrapper==null?"无数据":valueWrapper.get()));
+		System.out.println(mirror181);
 	}
 
 }

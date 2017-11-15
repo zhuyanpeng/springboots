@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 描述:
@@ -19,9 +20,9 @@ public interface UserRepository extends JpaRepository<User,Long> {
     @Cacheable(key = "#p0")
     User findByAccount(String account);
 
-    @CachePut(key = "#p0")
+    @Transactional
     @Modifying
-    @Query("update User u set u.name=?name where u.account=?account")
+    @Query("update User u set u.name=:name where u.account=:account")
     void updateNameByAccount(@Param("account") String account,@Param("name") String name);
 
     @Cacheable(key = "#p0", condition = "#p0.length()<4")
@@ -30,10 +31,12 @@ public interface UserRepository extends JpaRepository<User,Long> {
     @Query(" from User u where u.id=:id")
     User findById(Long id);
 
-    @CacheEvict(key = "#p0")
+    @Transactional
+    @Modifying
     void removeByAccount(String account);
 
     @Cacheable(key = "#p1", unless = "#result.name.length() >= 4")
     User findByIdAndAccount(Long id, String account);
-
+    @Query(" from User u where u.account=:account")
+    User findByAccount1(@Param("account") String account);
 }
