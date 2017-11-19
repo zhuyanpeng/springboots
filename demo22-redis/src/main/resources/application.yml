@@ -1,0 +1,21 @@
+spring:
+  redis:
+    host: 120.24.62.63
+    port: 6379
+    password: 123456
+    pool:
+      max-idle: 8
+      min-idle: 0
+      max-wait: 1
+      max-active: 8
+  datasource:
+    url: jdbc:mysql://192.168.147.128/test?useUnicode=true&characterEncoding=utf-8
+    username: root
+    password: adminroot
+    driver-class-name: com.mysql.jdbc.Driver
+    maxWait: 120000
+    type: com.alibaba.druid.pool.DruidDataSource
+    maxActive: 150
+  jpa:
+    database: mysql
+    show-sql: true

@@ -1,0 +1,3 @@
+与redis的整合只需要配置对应的properties配置信息即可，使用与ehcache一样但是与ehcache的区别就是ehcache是进程缓存，而redis是缓存数据库
+这会导致修改等方法的不同，因为ehcache缓存里的对象可以直接被外部修改不需要加put，缓存中和外部使用的是同一个对象。
+但是在redis中却不一样两者不是同一个
