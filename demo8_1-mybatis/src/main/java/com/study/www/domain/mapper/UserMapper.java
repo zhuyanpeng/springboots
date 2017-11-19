@@ -1,12 +1,10 @@
 package com.study.www.domain.mapper;
 
 import com.study.www.domain.User;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 描述:
@@ -25,4 +23,18 @@ public interface UserMapper {
 
     @Select("SELECT * FROM USER u where account like #{account}")
     List<User> selectByLikeAccount(@Param("account") String account);
+
+    @Update("Update User set sex=#{sex,jdbcType=INTEGER} where  account=#{account,jdbcType=VARCHAR} AND name=#{name,jdbcType=VARCHAR}")
+    int updateSexByAccountAndName(Map<String,Object> map);
+    @Delete("delete FROM user where id=#{id,jdbcType=INTEGER}")
+    void delete(Long id);
+
+    @Select("select account,name from User where id=#{id,jdbcType=INTEGER}")
+    @Results({
+            @Result(property = "account",column = "account"),
+            @Result(property = "name",column = "name")
+    })
+    Map findById(Long id);
+
+
 }

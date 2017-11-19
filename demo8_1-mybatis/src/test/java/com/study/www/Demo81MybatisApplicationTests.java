@@ -2,13 +2,17 @@ package com.study.www;
 
 import com.study.www.domain.User;
 import com.study.www.domain.mapper.UserMapper;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -39,5 +43,22 @@ public class Demo81MybatisApplicationTests {
 			System.out.println(user);
 		}
 	}
+	@Test
+	public void updateTest4(){
+		HashMap<String, Object> map= new HashMap<>();
+		map.put("account","mirror4");
+		map.put("name","测试4");
+		map.put("sex",12345);
+		userMapper.updateSexByAccountAndName(map);
+	}
+	@Test
+	public void deleteTest5(){
+		userMapper.delete(1L);
+	}
 
+	@Test
+	public void findTest6(){
+		Map byId = userMapper.findById(2L);
+		System.out.println(byId.keySet().toArray().toString());
+	}
 }
