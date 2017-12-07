@@ -1,6 +1,7 @@
 package com.study.www.application.service;
 
 import com.study.www.application.model.RedisBase;
+import com.study.www.application.model.RedisTest;
 
 import java.util.List;
 import java.util.Set;
@@ -31,6 +32,12 @@ public interface IRedisService {
      * @Date: 15:11 2017/12/7
      **/
     void add(RedisBase redisBase,long expire);
+    /**
+     * @Author: Administrator.zhuyanpeng
+     * @Description:列出列表所选范围的所有数据不清除,-1为所有的元素
+     * @Date: 18:59 2017/12/7
+     **/
+    List<RedisBase> lrange(String key,int left,int right);
     /**
      * @Author: Administrator.zhuyanpeng
      * @Description:删除

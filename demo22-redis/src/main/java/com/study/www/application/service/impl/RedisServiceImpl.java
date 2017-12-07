@@ -1,6 +1,7 @@
 package com.study.www.application.service.impl;
 
 import com.study.www.application.model.RedisBase;
+import com.study.www.application.model.RedisTest;
 import com.study.www.application.service.IRedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
@@ -53,6 +54,14 @@ public class RedisServiceImpl implements IRedisService{
         if (expire!=-1){
             template.expire(redisBase.getRedisKey(),expire, TimeUnit.SECONDS);
         }
+    }
+
+    @Override
+    public List<RedisBase> lrange(String key, int left, int right) {
+        if (right==-1){
+            return template.opsForList().range(key, left < 0 ? 0 : left, template.opsForList().size(key));
+        }
+        return template.opsForList().range(key,left<0?0:left,right<0?0:right);
     }
 
     @Override
