@@ -16,7 +16,7 @@ Welcome<br/>
 
     //判断当前浏览器是否支持WebSocket
     if('WebSocket' in window){
-        index = new WebSocket("ws://localhost:8080/websocket");
+        index = new WebSocket("ws://localhost:8080/websocket/");
     }
     else{
         alert('当前浏览器版本过低请升级否则将无法动态显示数据情况!');
