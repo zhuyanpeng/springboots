@@ -1,14 +1,25 @@
 <!DOCTYPE HTML>
-<html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <title>My WebSocket</title>
 </head>
-
 <body>
-Welcome<br/>
-<input id="text" type="text" /><button onclick="send()">Send</button>    <button onclick="closeWebSocket()">Close</button>
-<div id="message">
-</div>
+<h2>表单</h2>
+<br/>
+<table>
+    <tr>
+        <th>用户ID</th>
+        <th>用户名</th>
+        <th>用户岁数</th>
+        <th>金额</th>
+    </tr>
+    <tr th:each="user : ${users}">
+        <td  th:text="${user.id}"></td>
+        <td th:text="${user.name}"></td>
+        <td th:text="${user.age}"></td>
+        <td th:id="${user.id}" th:text="${user.price}"></td>
+    </tr>
+</table>
 </body>
 
 <script type="text/javascript">
@@ -16,7 +27,7 @@ Welcome<br/>
 
     //判断当前浏览器是否支持WebSocket
     if('WebSocket' in window){
-        websocket = new WebSocket("ws://localhost:8000/websocket");
+        websocket = new WebSocket("ws://localhost:8000/tablesocket");
     }
     else{
         alert('当前浏览器版本过低请升级否则将无法动态显示数据情况!');
@@ -49,7 +60,8 @@ Welcome<br/>
 
     //将消息显示在网页上
     function setMessageInnerHTML(innerHTML){
-        document.getElementById('message').innerHTML += innerHTML + '<br/>';
+       var json= JSON.parse(innerHTML);
+        document.getElementById(json.id).innerHTML=json.price;
     }
 
     //关闭连接
