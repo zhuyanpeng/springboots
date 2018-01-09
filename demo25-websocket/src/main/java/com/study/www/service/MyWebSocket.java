@@ -31,9 +31,8 @@ public class MyWebSocket {
         this.session = session;
         webSocketSet.add(this);
         addOnlineCount();
-        System.out.println("有新连接加入！当前在线人数为" + getOnlineCount());
         try {
-            sendMessage("");
+            sendInfo("有新连接加入！当前在线人数为["+getOnlineCount()+"]");
         } catch (Exception e) {
             System.out.println("IO异常");
         }
@@ -46,7 +45,11 @@ public class MyWebSocket {
     public void onClose() {
         webSocketSet.remove(this);  //从set中删除
         subOnlineCount();           //在线数减1
-        System.out.println("有一连接关闭！当前在线人数为" + getOnlineCount());
+        try {
+            sendInfo("有一连接关闭！当前在线人数为\"["+getOnlineCount()+"]");
+        } catch (Exception e) {
+            System.out.println("IO异常");
+        }
     }
 
     /**
@@ -56,7 +59,6 @@ public class MyWebSocket {
     @OnMessage
     public void onMessage(String message, Session session) {
         System.out.println("来自客户端的消息:" + message);
-
         //群发消息
         for (MyWebSocket item : webSocketSet) {
             try {
