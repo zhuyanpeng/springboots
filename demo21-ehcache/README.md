@@ -1,8 +1,8 @@
 运行test可以明显看到findByName明显有两次查询而findBYAccount只有一次查询，因为接口中的Cacheabe会进行缓存还因去application，<br>
 中开启缓存EnableCaching
 <br /> 
-@CacheConfig:用来配置在该类里面会公用到的缓存参数，例如例子中的cacheNames就是指定一个缓存对象的名字如果不写chache会自动来生成
-<br /> 
+@CacheConfig:用来配置在该类里面会公用到的缓存参数，例如例子中的cacheNames就是指定一个缓存对象的名字如果不写chache会自动来生成,注解加在抽象类上不知道为什么会出错
+<br /> CacheConfig
 @Cacheabble:配置的函数的返回值将会被加入到缓存中去。同时在查询时会有限从缓存中获取，若不存在才发起对数据的访问：其内部包<br>
 含参数有value、cacheNames、key、condition、unless、keyGenerator、cacheManager、cacheResolver等参数。
 <br>* 【`value和cacheNames`】两者一样只不过是前后的版本命名不同;
