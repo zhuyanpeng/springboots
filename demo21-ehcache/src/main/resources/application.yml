@@ -3,7 +3,9 @@ spring:
     platform: h2
     schema: classpath:schema.sql
     data:  classpath:data.sql
-
+  cache:
+    ehcache:
+      config: classpath:config/application-ehcache.xml
   jpa:
     database: mysql
     show-sql: true

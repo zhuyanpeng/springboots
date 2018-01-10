@@ -41,10 +41,10 @@ public class Demo21EhcacheApplicationTests {
 	@Test
 	public void nameTest() {
 		Date date = new Date();
-		User mirror = userRepository.findByName("测试20");
+		User mirror = userRepository.findByName("张三2");
 		Date date1  = new Date();
 		System.out.println("第一次查询耗时:"+(date1.getTime()-date.getTime())+"["+mirror.toString()+"]");
-		 mirror = userRepository.findByName("测试20");
+		 mirror = userRepository.findByName("张三2");
 		System.out.println("第二次查询耗时:"+(new Date().getTime()-date1.getTime())+"["+mirror.toString()+"]");
 	}
 	//account

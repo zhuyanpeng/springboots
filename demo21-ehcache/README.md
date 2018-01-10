@@ -1,5 +1,5 @@
 运行test可以明显看到findByName明显有两次查询而findBYAccount只有一次查询，因为接口中的Cacheabe会进行缓存还因去application，<br>
-中开启缓存EnableCaching
+中开启缓存EnableCaching,application默认开启的是ConcurrentMapCache而并非Ehcache，所以需要在pom文件中引入和在yml中指定
 <br /> 
 @CacheConfig:用来配置在该类里面会公用到的缓存参数，例如例子中的cacheNames就是指定一个缓存对象的名字如果不写chache会自动来生成
 <br /> 
