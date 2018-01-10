@@ -85,11 +85,11 @@ public class Demo21EhcacheApplicationTests {
 	//测试修改
 	@Test
 	public void putTest(){
-		User mirror18 = userRepository.findByAccount("mirror18");
+		User mirror18 = userRepository.findByAccount("mirror1");
 		System.out.println(mirror18);
 		mirror18.setName("一人我饮酒醉");
 		userService.updateUserByAccount(mirror18);
-		Cache.ValueWrapper valueWrapper = cacheManager.getCache("users").get("mirror18");
+		Cache.ValueWrapper valueWrapper = cacheManager.getCache("users").get("mirror1");
 		System.out.println("查看缓存中的数据:"+(valueWrapper==null?"无数据":valueWrapper.get()));
 		User mirror181 = userRepository.findByAccount("mirror18");
 		System.out.println(mirror181);
@@ -99,12 +99,12 @@ public class Demo21EhcacheApplicationTests {
 	@Test
 	@Transactional
 	public void removeTest(){
-		User mirror18 = userRepository.findByAccount("mirror17");
+		User mirror18 = userRepository.findByAccount("mirror5");
 		System.out.println(mirror18);
-		Cache.ValueWrapper valueWrapper = cacheManager.getCache("users").get("mirror17");
+		Cache.ValueWrapper valueWrapper = cacheManager.getCache("users").get("mirror5");
 		System.out.println("查看缓存中的数据:"+(valueWrapper==null?"无数据":valueWrapper.get()));
-		User mirror181 = userService.removeByAccount("mirror17");
-		valueWrapper= cacheManager.getCache("users").get("mirror17");
+		User mirror181 = userService.removeByAccount("mirror5");
+		valueWrapper= cacheManager.getCache("users").get("mirror5");
 		System.out.println("查看缓存中的数据:"+(valueWrapper==null?"无数据":valueWrapper.get()));
 		System.out.println(mirror181);
 	}

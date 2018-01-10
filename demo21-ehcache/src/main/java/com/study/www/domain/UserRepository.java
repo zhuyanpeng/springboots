@@ -23,7 +23,7 @@ public interface UserRepository extends JpaRepository<User,Long> {
     @Transactional
     @Modifying
     @Query("update User u set u.name=:name where u.account=:account")
-    void updateNameByAccount(@Param("account") String account,@Param("name") String name);
+    int updateNameByAccount(@Param("account") String account,@Param("name") String name);
 
     @Cacheable(key = "#p0", condition = "#p0.length()<4")
     User findByNameAndAccount(String name, String account);
