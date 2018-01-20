@@ -11,7 +11,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.cache.support.SimpleValueWrapper;
+import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,6 +32,8 @@ public class Demo21EhcacheApplicationTests {
 
 	@Autowired
 	UserService userService;
+
+
 
 	@Before
 	public void before(){
@@ -51,9 +55,9 @@ public class Demo21EhcacheApplicationTests {
 	@Test
 	public void accountTest(){
 		Date date = new Date();
-		User mirror = userRepository.findByAccount("mirror20");
+		User mirror = userRepository.findByAccount("mirror1");
 		Date date1  = new Date();
-		SimpleValueWrapper valueWrapper = (SimpleValueWrapper) cacheManager.getCache("users").get("mirror20");
+		SimpleValueWrapper valueWrapper = (SimpleValueWrapper) cacheManager.getCache("users").get("mirror1");
 		System.out.println("查看cache中的数据:"+valueWrapper.get());
 		System.out.println("第一次查询耗时:"+(date1.getTime()-date.getTime())+"["+mirror.toString()+"]");
 		mirror = userRepository.findByAccount("mirror20");

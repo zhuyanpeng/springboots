@@ -6,6 +6,7 @@ spring:
   cache:
     ehcache:
       config: classpath:config/application-ehcache.xml
+    type: ehcache
   jpa:
     database: mysql
     show-sql: true

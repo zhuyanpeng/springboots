@@ -3,9 +3,14 @@ package com.study.www.service;
 import com.study.www.domain.User;
 import com.study.www.domain.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.Cache;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 描述:
@@ -15,6 +20,9 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class UserService {
+
+    @Autowired
+    EhCacheCacheManager ehCacheCacheManager;
     @Autowired
     UserRepository userRepository;
     @CachePut(key = "#user.account",value = "users")
@@ -32,6 +40,29 @@ public class UserService {
         User byAccount1 = userRepository.findByAccount1(account);
         return byAccount1;
     }
+    @Cacheable(key = "#p0",value = "users")
+    public User findByName(String name){
+        Cache userCache = ehCacheCacheManager.getCache("users");
+        return userRepository.findByName(name);
+    }
+
+    /**
+     * 将所有的用户按照账号：用户存入缓存
+     * @return
+     */
+    public List<User> select(){
+        List<User> userList= userRepository.findAll();
+        Cache userCache = ehCacheCacheManager.getCache("users");
+        for (User user : userList) {
+            userCache.put(user.getAccount(),user);
+        }
+        return userList;
+    }
 
 
+    //如果select成功了的话那么这个就应该是有值的
+    @Cacheable(key = "#p0",value = "users")
+    public User findByAccount(String account){
+        return null;
+    }
 }

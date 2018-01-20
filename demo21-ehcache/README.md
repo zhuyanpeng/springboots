@@ -28,3 +28,17 @@
 @CacheEvict:配置于函数上，通常用于删除的方法上，用来从缓存中移除数据，其有两个参数分别是@allEntries：非必需，默认为false
 当为true时会移除掉所有的数据；beforeInvocation:非必须，默认为false,会在调用方法之后移除数据。当为true时，会在调用方法
 之前进行数据的移除。见UserService.removeByAccount
+
+### 如果想要手动注入可以映入ehCacheCacheManager通过getCache的方法进行注入,如下例子:
+```java
+    @Autowired
+    EhCacheCacheManager ehCacheCacheManager;
+    public List<User> select(){
+        List<User> userList= userRepository.findAll();
+        Cache userCache = ehCacheCacheManager.getCache("users");
+        for (User user : userList) {
+            userCache.put(user.getAccount(),user);
+        }
+        return userList;
+    }
+```
