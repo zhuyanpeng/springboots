@@ -17,13 +17,13 @@ import org.springframework.transaction.annotation.Transactional;
 public interface UserRepository extends JpaRepository<User,Long> {
     User findByName(String name);
 
-    @Cacheable(key = "#p0")
+    @Cacheable(key = "#p0",value = "users")
     User findByAccount(String account);
 
     @Transactional
     @Modifying
     @Query("update User u set u.name=:name where u.account=:account")
-    void updateNameByAccount(@Param("account") String account,@Param("name") String name);
+    int updateNameByAccount(@Param("account") String account,@Param("name") String name);
 
     @Cacheable(key = "#p0", condition = "#p0.length()<4")
     User findByNameAndAccount(String name, String account);

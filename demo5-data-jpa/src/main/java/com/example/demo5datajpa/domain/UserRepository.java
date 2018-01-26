@@ -17,7 +17,8 @@ public interface UserRepository extends JpaRepository<User,Long> {
     User findByNameAndAge(String name,Integer age);
     @Query("from User u where u.name=:name")
     User findUser(@Param("name") String name);
-
+    
+    @Transactional
     @Modifying
     @Query("update User u set  u.age=:age where u.name=:name")
     int setNameById(@Param("name") String name,@Param("age") Integer age);

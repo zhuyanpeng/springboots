@@ -2,7 +2,7 @@
          xsi:noNamespaceSchemaLocation="ehcache.xsd">
     <cache name="users"
            maxEntriesLocalHeap="200"
-           timeToLiveSeconds="600">
+           timeToLiveSeconds="30"><!--30秒之后全部失效-->
     </cache>
 </ehcache>
 

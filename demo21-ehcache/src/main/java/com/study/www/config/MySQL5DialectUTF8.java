@@ -2,6 +2,9 @@ package com.study.www.config;
 
 import org.hibernate.dialect.MySQL5Dialect;
 import org.hibernate.dialect.MySQL5InnoDBDialect;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.ehcache.EhCacheCacheManager;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -16,4 +19,7 @@ public class MySQL5DialectUTF8 extends MySQL5InnoDBDialect {
     public String getTableTypeString() {
         return " ENGINE=InnoDB DEFAULT CHARSET=utf8";
     }
+
+
+
 }
