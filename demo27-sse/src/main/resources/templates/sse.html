@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>单工通信</title>
+    <script src="/js/jquery-2.1.4.min.js"></script>
+</head>
+<body>
+<div id="msgFromPush">
+
+</div>
+</body>
+<script type="text/javascript">
+    if (!!window.EventSource){
+            var source = new EventSource("push");
+            s="";
+            source.addEventListener("message",function (e) {
+                s+=e.data+"<br/>";
+                document.getElementById("msgFromPush").innerHTML=s;
+            });
+
+            source.addEventListener("open",function (e) {
+                console.log("链接打开");
+            });
+            
+            source.addEventListener("error",function (e) {
+                if(e.readyState==EventSource.CLOSED){
+                    console.log("链接关闭");
+                }else{
+                    console.log(e.readyState);
+                }
+            },false);
+
+    }else {
+        alert("服务器不支持SSE");
+    }
+</script>
+</html>
