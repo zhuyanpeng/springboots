@@ -1,21 +1,18 @@
 package com.example.demo5datajpa.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * 作用说明：
  *
- * @author mirror.zhuyanpeng
  * @create 2017-08-28 23:39
  **/
 @Entity
+@Table(name = "USER")
 public class User {
     @Id
-    @GeneratedValue
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
     @Column(nullable = false)
     private String name;
     @Column(nullable = false)
@@ -29,11 +26,11 @@ public class User {
         this.age = age;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

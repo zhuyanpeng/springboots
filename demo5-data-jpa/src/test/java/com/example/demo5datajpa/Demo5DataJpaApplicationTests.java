@@ -9,6 +9,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class Demo5DataJpaApplicationTests {
@@ -16,7 +18,7 @@ public class Demo5DataJpaApplicationTests {
 	UserRepository userRepository;
 	@Test
 	public void contextLoads() {
-		userRepository.save(new User("aa1",123456));
+		userRepository.findAll();
 		userRepository.save(new User("aa2",123456));
 		userRepository.save(new User("aa3",123456));
 		userRepository.save(new User("aa4",123456));
@@ -39,5 +41,14 @@ public class Demo5DataJpaApplicationTests {
 		userRepository.setNameById("张三1", 30);
 		User s = userRepository.findByName("张三1");
 		System.out.println("呵呵呵呵>>>"+s.getAge());
+	}
+
+	@Test
+	@Transactional
+	public void test3(){
+		User u1 = userRepository.findByName("张三1");
+		u1.setAge(999);
+		int i = userRepository.setNameById(u1.getName(), u1.getAge());
+		System.out.println(i);
 	}
 }
