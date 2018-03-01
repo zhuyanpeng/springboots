@@ -4,6 +4,7 @@ import com.study.www.domain.User;
 import com.study.www.domain.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
+import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -19,6 +20,7 @@ import java.util.List;
  * @create 2017-11-16 06:29
  */
 @Service
+@CacheConfig(cacheNames = "users")
 public class UserService {
 
     @Autowired
@@ -59,6 +61,17 @@ public class UserService {
         return userList;
     }
 
+    public List<User> findAll(){
+        List<User> users;
+        Cache cache = ehCacheCacheManager.getCache("users");
+        if (cache.get("all")==null){
+            users = userRepository.findAll();
+            cache.put("all",users);
+        }else{
+            users= (List<User>) cache.get("all").get();
+        }
+        return users;
+    }
 
     //如果select成功了的话那么这个就应该是有值的
     @Cacheable(key = "#p0",value = "users")
