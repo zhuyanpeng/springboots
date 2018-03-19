@@ -40,6 +40,7 @@ public class DzspProcessorService implements PageProcessor{
     public static String KEY="pipis";
 
     private void setResultDay(List<String> resultDay) {
+        int w;
         if (StringUtils.isNotBlank(resultDay.get(0).split(";")[0])) {
             if(resultDay.size()==1){
                 String[] split = resultDay.get(0).split(";");
@@ -55,7 +56,7 @@ public class DzspProcessorService implements PageProcessor{
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
             Date date = new Date();
             cal.setTime(date);
-            int w = cal.get(Calendar.DAY_OF_WEEK) - 1;
+            w = cal.get(Calendar.DAY_OF_WEEK) - 1;
             if (w ==1){
                 cal.add(Calendar.DATE, -3);//当前时间前去一个天，即一个月前的时间
             }else{
@@ -93,8 +94,9 @@ public class DzspProcessorService implements PageProcessor{
     }
 
     private boolean isExistData(List<String> resultDay) {
+        int count;
         for (String time : resultDay) {
-            int count = pipiUpDownExplainMapper.queryCountByTime(time);
+            count = pipiUpDownExplainMapper.queryCountByTime(time);
             if (count<10){
                 return false;
             }
