@@ -12,9 +12,9 @@ spring:
       ddl-auto: none
   redis:
     database: 2
-    host: *****
+    host: ****
     port: 6379
-    password: ****
+    password: 123456
 
 logging:
   level:
