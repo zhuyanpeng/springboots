@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * 作用说明：
  *
- * @author mirror.zhuyanpeng
  * @create 2017-08-29 0:30
  **/
 public interface UserRepository extends JpaRepository<User,Long> {

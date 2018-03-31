@@ -3,10 +3,12 @@ package com.study.www;
 import com.study.www.domain.User;
 import com.study.www.domain.UserRepository;
 import com.study.www.service.UserService;
+import org.hibernate.engine.jdbc.ReaderInputStream;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
@@ -14,10 +16,13 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.cache.support.SimpleValueWrapper;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.*;
 import java.util.Date;
+import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -33,6 +38,25 @@ public class Demo21EhcacheApplicationTests {
 	@Autowired
 	UserService userService;
 
+	@Value("${spring.cache.ehcache.config}")
+	private String cacheConfig;
+
+	@Test
+	public void tt(){
+		try {
+			cacheConfig = cacheConfig.split(":")[1];
+			ClassPathResource classPathResource = new ClassPathResource(cacheConfig);
+			InputStream inputStream = classPathResource.getInputStream();
+			BufferedReader br=new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
+			String temp=new String();
+			while (temp!=null){
+                temp =br.readLine();
+				System.out.println(temp);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 
 	@Before
@@ -60,8 +84,20 @@ public class Demo21EhcacheApplicationTests {
 		SimpleValueWrapper valueWrapper = (SimpleValueWrapper) cacheManager.getCache("users").get("mirror1");
 		System.out.println("查看cache中的数据:"+valueWrapper.get());
 		System.out.println("第一次查询耗时:"+(date1.getTime()-date.getTime())+"["+mirror.toString()+"]");
-		mirror = userRepository.findByAccount("mirror20");
+		mirror = userRepository.findByAccount("mirror1");
 		System.out.println("第二次查询耗时:"+(new Date().getTime()-date1.getTime())+"["+mirror.toString()+"]");
+	}
+
+	/**
+	 * 因为spring-cache的key无法固定所以只能采取使用cacheManager 的方式进行使用
+	 * @return: void
+	 */
+	@Test
+	public void findAllTest(){
+		List<User> users =userService.findAll();
+		System.out.println("第一次查询耗时:"+users.size());
+		users =userService.findAll();
+		System.out.println("第二次查询耗时:"+users.size());
 	}
 
 	//测试key的设定和缓存条件当第一个参数小于4时才被缓存
@@ -112,5 +148,7 @@ public class Demo21EhcacheApplicationTests {
 		System.out.println("查看缓存中的数据:"+(valueWrapper==null?"无数据":valueWrapper.get()));
 		System.out.println(mirror181);
 	}
+
+
 
 }

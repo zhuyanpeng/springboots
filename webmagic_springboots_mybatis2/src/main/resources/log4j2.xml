@@ -17,7 +17,7 @@
 
             <!-- log文件只打印error级别信息 -->
             <Filters>
-                <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY"/>
+                <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
             </Filters>
         </RollingFile>
     </Appenders>
