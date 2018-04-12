@@ -30,8 +30,7 @@ public class Swagger2 {
     //具体信息展现
     private ApiInfo apiInfo(){
         return new ApiInfoBuilder().title("spring boot使用Swagger2构建RESTFUL API").
-                description("跟多spring boot相关文章请关注：http://www.baidu.com")
-                .termsOfServiceUrl("http://www.baidu.com")
+                description("主页入口：http://www.baidu.com")
                 .contact("程序人生")
                 .version("1.0")
                 .build();

@@ -1,10 +1,9 @@
 package com.example.demo2swagger2restful.web;
 
 import com.example.demo2swagger2restful.User;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.*;
 
@@ -14,6 +13,7 @@ import java.util.*;
  * @author mirror.zhuyanpeng
  * @create 2017-08-24 1:01
  **/
+
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -58,5 +58,20 @@ public class UserController {
     public String deleteUser(@PathVariable String id){
         users.remove(id);
         return "success";
+    }
+
+    @ApiOperation("返回自定义的响应码")
+    @ApiResponses({ @ApiResponse(code = 4211, message = "跳转到登陆"),
+            @ApiResponse(code = 4212, message = "服务器内部异常"),
+            @ApiResponse(code = 4213, message = "权限不足") })
+    @PostMapping("/result")
+    public String result(){
+        return  null;
+    }
+
+    @ApiIgnore
+    @GetMapping("/ignore")
+    public String ignore(){
+        return null;
     }
 }
