@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:xmls="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"></meta>
+    <title>Title</title>
+</head>
+<body>
+<table border="1">
+    <tr>
+        <th>index</th>
+        <th>count</th>
+        <th>size</th>
+        <th>current</th>
+        <th>奇偶</th>
+        <th>是否首尾</th>
+        <th>id</th>
+        <th>name</th>
+        <th>age</th>
+    </tr>
+    <!--其中iter为状态变量
+    index：迭代的第几个对象0开始计算；
+    count：迭代的第几个对象1开始计算；
+    size:被迭代对象的大小；
+    current：当前被迭代的变量；
+    even/odd:布尔值，大年循环是否是偶数/奇数 从0开始计算；
+    first:布尔值 当前循环是否是第一个
+    last:布尔值 当前循环是否是最后一个-->
+    <tr th:each="user,iter:${users}">
+        <td th:text="${iter.index}">1</td>
+        <td th:text="${iter.count}"></td>
+        <td th:text="${iter.size}"></td>
+        <td th:text="${iter.current}"></td>
+        <td th:text="${iter.even}?'偶数':'奇数'"></td>
+        <td th:text="${iter.first}?'第一个':(${iter.last}?'最后一个':'中间的')"></td>
+        <td th:text="${user.id}"></td>
+        <td th:text="${user.name}"></td>
+        <td th:text="${user.age}"></td>
+    </tr>
+</table>
+</body>
+</html>

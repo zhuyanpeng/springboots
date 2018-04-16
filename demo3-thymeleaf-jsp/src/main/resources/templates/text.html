@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:xmls="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"></meta>
+    <title>Title</title>
+</head>
+<body>
+<h2>文本显示</h2>
+<p th:text="'例子1:'+${result}">默认的显示</p>
+<p th:text="|例子2:${result}|">默认的显示</p>
+<hr/>
+<h2>运算符</h2>
+<!--|| 之间只能有一个变量表达式-->
+<p th:text="'+='+ (${number}+5) ">默认的显示</p>
+<p th:text="'-='+ (${number}-5) ">默认的显示</p>
+<p th:text="'*='+ ${number}*5 ">默认的显示</p>
+<p th:text="'/='+ ${number}/5 ">默认的显示</p>
+<p th:text="'%='+ ${number}%5 ">默认的显示</p>
+<hr/>
+<h2>上下文环境</h2>
+<!--变量表达式，用来访问容器上下文环境中的变量-->
+<p th:text="|$变量表达式-application:${application.context_content}|"/>
+<p th:text="|$变量表达式-session:${session.context_content}|"/>
+<hr/>
+<h2>消息表达式</h2>
+<h4>时间表达式</h4>
+<p th:text="|$dateformat时间格式化:${#dates.format(date_format_content,'yyyy-MM-dd HH:mm:ss')}|"/>
+<p th:text="|$时间:${date_str}|"/>
+
+<p th:text="|$消息表达式:${date_format}|"/>
+<p th:text="|#消息表达式:${result}|"/>
+<p th:text="|@url链接表达式:@{result}|"/>
+</body>
+</html>
