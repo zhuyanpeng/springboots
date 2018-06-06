@@ -8,6 +8,7 @@
 <h2>文本显示</h2>
 <p th:text="'例子1:'+${result}">默认的显示</p>
 <p th:text="|例子2:${result}|">默认的显示</p>
+<p th:name="${result}">默认的显示</p>
 <hr/>
 <h2>运算符</h2>
 <!--|| 之间只能有一个变量表达式-->
@@ -25,7 +26,48 @@
 <h2>消息表达式</h2>
 <h4>时间表达式</h4>
 <p th:text="|$dateformat时间格式化:${#dates.format(date_format_content,'yyyy-MM-dd HH:mm:ss')}|"/>
-<p th:text="|$时间:${date_str}|"/>
+<p th:text="|$dateformat时间格式化2:${#dates.format(date_format_content,'yyyy/MM/dd HH:mm:ss')}|"/>
+<p th:text="|$时间格式化-year:${#dates.year(date_format_content)}|"/>
+<p th:text="|$时间格式化-moth:${#dates.month(date_format_content)}|"/>
+<p th:text="|$时间格式化-monthName:${#dates.monthName(date_format_content)}|"/>
+<p th:text="|$时间格式化-dayofweek:${#dates.dayOfWeek(date_format_content)}|"/>
+<p th:text="|$时间格式化-dayofWeekName:${#dates.dayOfWeekName(date_format_content)}|"/>
+<p th:text="|$时间格式化-hour:${#dates.hour(date_format_content)}|"/>
+<p th:text="|$时间格式化-minute:${#dates.minute(date_format_content)}|"/>
+<p th:text="|$时间格式化-second:${#dates.second(date_format_content)}|"/>
+<p th:text="|$时间格式化-millisecond:${#dates.millisecond(date_format_content)}|"/>
+<p th:text="|$时间此时-createNow:${#dates.createNow()}|"/>
+<p th:text="|$时间当日起始时间-createToDay:${#dates.createToday()}|"/>
+<p th:text="|$时间参数引入-create:${#dates.create('2017','09','16')}|"/>
+<p th:text="|$时间参数引入-createHour:${#dates.create('2017','09','16','23','44')}|"/>
+<p th:text="|$时间参数引入-createSecond:${#dates.create('2017','09','16','23','44','55')}|"/>
+<p th:text="|$时间:${date_str_content}|"/>
+<h4>数字表达式</h4>
+<p th:text="|$数字格式化三位有效-integer：${#numbers.formatInteger(number,3)}|"/>
+<p th:text="|$数字格式化三位有效-double,Decimal,float：${#numbers.formatDecimal(number_double,1,3)}|"/>
+<p th:text="|$数字格式化三位有效-integer-list：${#numbers.arrayFormatInteger(number_list,3)[14]}|"/>
+<!--sequence(start,end) 列出从start到end的所有的数据-->
+<p th:text="|${#numbers.sequence(number,15)}|"/>
+<p th:text="'$数字格式化-sequence:'+${#strings.toString(#numbers.sequence(number,15))}"/>
+<table border="1">
+    <tr><th>index</th></tr>
+    <tr th:each="ind:${#numbers.sequence(number,15)}"><td th:text="${ind}">1</td> </tr>
+</table>
+<!--sequence(start,end,step) 列出从start到end的所有的数据，step步数-->
+<p th:text="|$数字格式化-sequence:${#numbers.sequence(number,15)}|"/>
+<table border="1">
+    <tr><th>index</th></tr>
+    <tr th:each="ind:${#numbers.sequence(number,90,8)}"><td th:text="${ind}">1</td> </tr>
+</table>
+<h4>字符串表达式</h4>
+<!--与toString()方法一样可以列举出数组、集合、set中的元素-->
+<p th:text="${#strings.toString(number_list)}"/>
+<!--检查数组或者list、set是否为空-->
+<p th:text="${#strings.isEmpty(number_list_empt)}"/>
+<p th:text="${#strings.listIsEmpty(number_list_empt)}"/>
+<p th:text="${#strings.arrayIsEmpty(number_list_empt)}"/>
+<h4>引入Properties中的内容</h4>
+<p th:text="#{welcom}"/>
 
 <p th:text="|$消息表达式:${date_format}|"/>
 <p th:text="|#消息表达式:${result}|"/>

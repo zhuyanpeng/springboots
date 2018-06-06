@@ -46,6 +46,14 @@ public class UserController {
     public String text(ModelMap map, HttpSession session, HttpServletRequest request, HttpServletResponse response){
         map.put("result","我是演示");
         map.put("number",12);
+        map.put("number_double",12.2876);
+        List<Integer> numberList = new ArrayList<>();
+        for (int i = 0; i < 20; i++) {
+            numberList.add(i*10+30);
+        }
+        map.put("number_list",numberList);
+        map.put("number_list_empt",new ArrayList<String>());
+        map.put("numer_list_str","24,12,567,89,12");
         application.setAttribute("context_content","application_bbb");
         session.setAttribute("context_content","session_bbb");
         map.put("date_str_content","2017-08-08 11:01:11");
