@@ -1,0 +1,11 @@
+synta = "proto3";
+option java_package="com.study.www.model";
+option java_outer_classname="Datas";
+
+message Data{
+    String str=1;
+    String str1=2;
+    String str2=3;
+    String str3=4;
+    String str4=5;
+}
