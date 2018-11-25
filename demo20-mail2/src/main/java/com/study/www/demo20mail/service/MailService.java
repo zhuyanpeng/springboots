@@ -1,25 +1,17 @@
 package com.study.www.demo20mail.service;
 
-import cn.xunjie.www.config.MailSenderConfig;
-import cn.xunjie.www.enums.CNEnum;
-import cn.xunjie.www.model.common.mail.AppMailConfig;
-import cn.xunjie.www.model.common.mail.AppMailConfigExample;
-import cn.xunjie.www.model.common.mail.AppMailLog;
-import cn.xunjie.www.model.common.mail.AppMailLogExample;
-import cn.xunjie.www.model.common.mail.mapper.AppMailConfigMapper;
-import cn.xunjie.www.model.common.mail.mapper.AppMailLogMapper;
-import cn.xunjie.www.utils.DateUtils;
-import com.alibaba.fastjson.JSON;
-import com.github.pagehelper.PageHelper;
-import com.study.www.demo20mail.model.mail.AppMailConfig;
-import com.study.www.demo20mail.model.mail.AppMailConfigExample;
-import com.study.www.demo20mail.model.mail.AppMailLog;
-import com.study.www.demo20mail.model.mail.mapper.AppMailConfigMapper;
-import com.study.www.demo20mail.model.mail.mapper.AppMailLogMapper;
+import com.study.www.demo20mail.model.mail.MailConfig;
+import com.study.www.demo20mail.model.mail.MailLog;
+import com.study.www.demo20mail.model.mail.MailLogRepository;
+import com.study.www.demo20mail.model.mail.MailSenderConfig;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,7 +20,6 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -41,52 +32,35 @@ import java.util.Map;
 @Service
 @Slf4j
 public class MailService {
-    @Autowired
-    AppMailLogMapper mailLogMapper;
-    @Autowired
-    AppMailConfigMapper mailConfigMapper;
+    //此参数可以从枚举中去配置获得
+  private final Integer STATUS=0;
+  // 是否保存邮件内容，此操作看需求进行开启若开启得话会对表得数据量有点大
+  private final boolean isContentExit = false;
 
-    private boolean saveMailLog(AppMailLog appMailLog) throws MessagingException, IOException {
-        appMailLog.setStatus(Integer.valueOf(CNEnum.SEEK_ISDEL_EXIST.getCode()));
-        appMailLog.setCreatetime(new Date());
-        appMailLog.setUpdatetime(new Date());
-        appMailLog.setCreateby("99999");
-        appMailLog.setUpdateby("99999");
-        int insert = mailLogMapper.insert(appMailLog);
-        return insert > 0;
-    }
 
-    public AppMailConfig findConfig(){
-        AppMailConfigExample example = new AppMailConfigExample();
-        PageHelper.orderBy("id desc");
-        List<AppMailConfig> appMailConfigs = mailConfigMapper.selectByExample(example);
-        // 修改发送次数+1
-        AppMailConfig appMailConfig = appMailConfigs.get(0);
-        appMailConfig.setSendnum(appMailConfig.getSendnum()+1);
-        mailConfigMapper.updateByPrimaryKeySelective(appMailConfig);
-        return appMailConfig;
-    }
-    /*每次修改就是一次保存，操作留痕*/
-    public boolean saveConfig(AppMailConfig config){
-        log.warn("******[date:"+ DateUtils.getDateFormat(new Date(), DateUtils.YYYYMMDDHHMMSS)+"]***********[save]===============>[saveMailLogConfig]");
-        int insert = mailConfigMapper.insert(config);
-        return insert > 0;
-    }
+    @Autowired
+    MailLogRepository mailLogRepository;
+    @Autowired
+    MailConfigService configService;
+
+
 
     /**
      * 根据模板名称查找模板，加载模板内容后发送邮件
      * receiver  收件人地址
-     * subject 邮件主题
-     * map 内容
+     * subject 邮件主题 和模板名称一模一样 可以做个字典配置
+     * map 内容 必须包含   authCode:验证码
+     *
      */
     @Transactional
     public void sendMailByTemplate(String receiver, String subject,
                                    Map<String, String> map, String templateName) throws IOException,
             TemplateException, MessagingException {
-        AppMailConfig config = this.findConfig();
-        MailSenderConfig mail = new MailSenderConfig(config.getMailhost());
-        mail.setNamePass(config.getMailusername(), config.getMailpassword(), config.getNickname());
-        map.put("authCodeTime",String.valueOf(config.getAuthcodetime())+"秒");
+        MailConfig config = configService.findNow();
+        MailSenderConfig mail = new MailSenderConfig(config.getSmtp());
+        map.put("userName",receiver); //具体模板具体对待
+        mail.setNamePass(config.getSenderaddress(), config.getMailpassword(), config.getMailpassword());
+        map.put("authCodeTime",String.valueOf(config.getAuthcodetime()));
         String maiBody = this.generateHtmlFromFtl(templateName, map);
         mail.setSubject(subject);
         mail.setBody(maiBody);
@@ -94,7 +68,7 @@ public class MailService {
         mail.setSender(config.getSenderaddress());
         mail.sendout();
         //保存记录
-        writeLog(config,receiver,subject,maiBody,map);
+        writeLog(config,receiver,mail,map);
     }
 
     /**
@@ -103,18 +77,18 @@ public class MailService {
      * subject 邮件主题
      * maiBody 邮件正文
      */
-    public void sendMail(String receiver, String subject, String maiBody)
+    public void sendMail(String receiver, String subject,Map<String, String> map, String maiBody)
             throws IOException, MessagingException {
-        AppMailConfig config = this.findConfig();
-        MailSenderConfig mail = new MailSenderConfig(config.getMailhost());
-        mail.setNamePass(config.getMailusername(), config.getMailpassword(), config.getNickname());
+        MailConfig config = configService.findNow();
+        MailSenderConfig mail = new MailSenderConfig(config.getSmtp());
+        mail.setNamePass(config.getSenderaddress(), config.getMailpassword(), config.getMailpassword());
         mail.setSubject(subject);
         mail.setBody(maiBody);
         mail.setReceiver(receiver);
         mail.setSender(config.getSenderaddress());
         mail.sendout();
         //保存记录
-        writeLog(config,receiver,subject,maiBody,null);
+        writeLog(config,receiver,mail,map);
     }
 
     /**
@@ -124,35 +98,19 @@ public class MailService {
      * @return
      */
     public boolean validateMail(String mailStr,Date time){
-        AppMailConfig config = this.findConfig();
-        AppMailLogExample example = new AppMailLogExample();
-        example.createCriteria().andAcceptaddressEqualTo(mailStr);
-        PageHelper.orderBy("CreateTime desc");
-        List<AppMailLog> appMailLogs = mailLogMapper.selectByExample(example);
-        if (appMailLogs == null || appMailLogs.size() == 0){
+        MailConfig config = configService.findNow();
+        PageRequest qageRequest = new PageRequest(0, 1, Sort.Direction.DESC, "createtime");
+        Page<MailLog> mailLogs = mailLogRepository.findAll(qageRequest);
+        if (mailLogs == null || mailLogs.getContent().size() == 0){
             return false;
         }
-        Date createtime = appMailLogs.get(0).getCreatetime();
+        Date createtime = mailLogs.getContent().get(0).getCreatetime();
         Integer authcodetime = config.getAuthcodetime();
         return authcodetime > ((time.getTime() - createtime.getTime()) / 1000);
     }
 
 
-    public AppMailLog query(String mailStr,Date time){
-        AppMailConfig config = this.findConfig();
-        AppMailLogExample example = new AppMailLogExample();
-        AppMailLogExample.Criteria criteria = example.createCriteria();
-        criteria.andAcceptaddressEqualTo(mailStr);
-        if (time != null){
-            criteria.andCreatetimeBetween(new Date(time.getTime()-config.getAuthcodetime()*1000),time);
-        }
-        PageHelper.orderBy(" CreateTime desc");
-        List<AppMailLog> appMailLogs = mailLogMapper.selectByExample(example);
-        if (appMailLogs != null && appMailLogs.size() > 0){
-            return appMailLogs.get(0);
-        }
-        return null;
-    }
+
 
     private  String generateHtmlFromFtl(String name,
                                         Map<String, String> map) throws IOException, TemplateException {
@@ -164,56 +122,29 @@ public class MailService {
 
     /**
      * 发送邮件写入日志
-     * @param config
-     * @param receiver
-     * @param subject
-     * @param maiBody
      * @param map
      * @return
      * @throws IOException
      * @throws MessagingException
      */
-    private boolean writeLog(AppMailConfig config, String receiver, String subject, String maiBody,Map<String, String> map) throws IOException, MessagingException {
-        AppMailLog appMailLog = new AppMailLog();
-        appMailLog.setMailhost(config.getMailhost());
-        appMailLog.setSenderaddress(config.getSenderaddress());
-        appMailLog.setSendmailusername(config.getMailusername());
-        appMailLog.setAcceptaddress(receiver);
-        appMailLog.setSubject(subject);
-        appMailLog.setContent(maiBody);
-        appMailLog.setAuthcode(JSON.toJSONString(map));
-        return this.saveMailLog(appMailLog);
 
+    @Async
+    public void writeLog(MailConfig config, String receiver, MailSenderConfig mail,Map<String, String> map) {
+        MailLog mailLog = new MailLog();
+        mailLog.setSenderaddress(config.getSenderaddress());
+        mailLog.setAcceptaddress(receiver);
+        mailLog.setSubject(mail.getSubject());
+        mailLog.setAuthcode(map.get("authcode"));
+        mailLog.setAuthcodeTime(map.get("authcodeTime"));
+        mailLog.setStatus(STATUS);
+        mailLog.setCreatetime(new Date());
+        mailLog.setUpdatetime(new Date());
+        if (!isContentExit){
+            mailLog.setContent(null);
+        }
+        mailLog.setCreateby("99999");
+        mailLog.setUpdateby("99999");
+        MailLog save = mailLogRepository.save(mailLog);
     }
 
-    /**
-     * 校验邮箱配置
-     * @param mailUserName
-     * @param mailHost
-     * @param mailPassword
-     * @param map
-     */
-    public void validateMailConfig(String mailUserName, String mailHost, String mailPassword, String subject,
-                                   Map<String, String> map, String templateName)  throws IOException,
-            TemplateException, MessagingException {
-        MailSenderConfig mail = new MailSenderConfig(mailHost);
-        mail.setNamePass(mailUserName, mailPassword, mailUserName);
-        map.put("authCodeTime","120秒");
-        String maiBody = this.generateHtmlFromFtl(templateName, map);
-        mail.setSubject(subject);
-        mail.setBody(maiBody);
-        mail.setReceiver(mailUserName);
-        mail.setSender(mailUserName);
-        mail.sendout();
-        //保存记录
-        AppMailLog appMailLog = new AppMailLog();
-        appMailLog.setMailhost(mailHost);
-        appMailLog.setSenderaddress(mailUserName);
-        appMailLog.setSendmailusername(mailUserName);
-        appMailLog.setAcceptaddress(mailUserName);
-        appMailLog.setSubject(subject);
-        appMailLog.setContent(maiBody);
-        appMailLog.setAuthcode(JSON.toJSONString(map));
-        this.saveMailLog(appMailLog);
-    }
 }

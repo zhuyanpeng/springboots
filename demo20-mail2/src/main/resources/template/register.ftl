@@ -19,7 +19,7 @@
         <p style="margin:0 0 5px 0; padding:0; color:#333; font-size:18px; line-height:36px;">亲爱的(${userName})：</p>
         <p style="margin:0; padding:8px 0;">您好！</p>
         <p style="margin:0; padding:8px 0;">您正在进行账户基础信息维护，请在校验码输入框中输入：<span style="color: red;font-size: large;font-weight: bold">${authCode}</span>，以完成操作。&nbsp; </p>
-        <p style="margin:0; padding:8px 0;">注意：有效时长:${authCodeTime},并且客服人员不会向您索取此校验码，请勿泄漏！</p>
+        <p style="margin:0; padding:8px 0;">注意：有效时长:${authCodeTime}秒,并且客服人员不会向您索取此校验码，请勿泄漏！</p>
     </div>
     <div style="margin:50px 40px 0;  padding:5px 0; border-top:1px dashed #ff96b1;">
         <table border="0" cellspacing="15" cellpadding="0" width="100%">
