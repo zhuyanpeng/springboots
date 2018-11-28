@@ -1,12 +1,14 @@
-package com.study.www.demo34mybatisplusauto;
+package com.study.www;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class Demo34MybatisplusAutoApplication {
+@MapperScan("com.study.www.mapper")
+public class Application {
 
     public static void main(String[] args) {
-        SpringApplication.run(Demo34MybatisplusAutoApplication.class, args);
+        SpringApplication.run(Application.class, args);
     }
 }

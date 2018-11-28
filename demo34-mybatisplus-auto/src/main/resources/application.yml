@@ -1,8 +1,38 @@
 spring:
     datasource:
-      driver-class-name: org.h2.Driver
-      schema: classpath:db/schema.sql
-      data: classpath:db/data.sql
-      url: jdbc:h2:mem:test
+      driver-class-name: com.mysql.jdbc.Driver
+      url: jdbc:mysql://192.168.44.128:3306/mybatisplus1?useUnicode=true&useSSL=false&characterEncoding=utf8
       username: root
-      password: root
+      password: 123456
+    output:
+      ansi:
+        enabled: detect
+#mybatis
+mybatis-plus:
+  mapper-locations: classpath:/mapper/**/*Mapper.xml
+  #实体扫描，多个package用逗号或者分号分隔
+  typeAliasesPackage: com.study.www.entity
+  global-config:
+    # 数据库相关配置
+    db-config:
+      #主键类型  AUTO:"数据库ID自增", INPUT:"用户输入ID",ID_WORKER:"全局唯一ID (数字类型唯一ID)", UUID:"全局唯一ID UUID";
+      id-type: id_worker
+      #字段策略 IGNORED:"忽略判断",NOT_NULL:"非 NULL 判断"),NOT_EMPTY:"非空判断"
+      field-strategy: not_empty
+      #驼峰下划线转换
+      column-underline: true
+      #数据库大写下划线转换
+      #capital-mode: true
+      #逻辑删除配置
+      logic-delete-value: 0
+      logic-not-delete-value: 1
+    #刷新mapper 调试神器
+    refresh: true
+  # 原生配置
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+#debug: true
+logging:
+  level:
+      com.study.www.mapper: debug

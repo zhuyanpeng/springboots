@@ -9,7 +9,9 @@ import com.baomidou.mybatisplus.generator.config.*;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -46,11 +48,7 @@ public class CodeGenerator {
     }
 
     public static void main(String[] args) {
-        // 代码生成器
-        AutoGenerator mpg = new AutoGenerator();
 
-        // 全局配置
-        GlobalConfig gc = new GlobalConfig();
         // 此处 不一定是用户的工作目录有可能说当前项目路劲下
         String projectPath = System.getProperty("user.dir");
         String classPath = Class.class.getResource("/").getPath();
@@ -74,63 +72,70 @@ public class CodeGenerator {
             rootPath =rootPath+"/src/main";
         }
         System.out.println("当前文件生成目录如下=>"+rootPath);
-        gc.setOutputDir(rootPath+"/java");
-        gc.setAuthor("jobob");
-        gc.setOpen(false);
-        mpg.setGlobalConfig(gc);
+        String modelName = scanner("模块名(eg:role)");
+        String parentStr = scanner("类名(eg:com.baomidou.ant)");
+        String includeStr = scanner("表名 多个以，号间隔");
+        String[] split = includeStr.split(",");
+        for (String include : split) {
+            // 代码生成器
+            AutoGenerator mpg = new AutoGenerator();
 
-        // 数据源配置
-        DataSourceConfig dsc = new DataSourceConfig();
-        dsc.setUrl("jdbc:mysql://132.232.60.234:3306/mybatisplus1?useUnicode=true&useSSL=false&characterEncoding=utf8");
-        // dsc.setSchemaName("public");
-        dsc.setDriverName("com.mysql.jdbc.Driver");
-        dsc.setUsername("root");
-        dsc.setPassword("tenxun##Admin");
-        mpg.setDataSource(dsc);
+            // 全局配置
+            GlobalConfig gc = new GlobalConfig();
+            gc.setOutputDir(rootPath+"/java");
+            gc.setAuthor("jobob");
+            gc.setOpen(false);
+            mpg.setGlobalConfig(gc);
 
+            // 数据源配置
+            DataSourceConfig dsc = new DataSourceConfig();
+            dsc.setUrl("jdbc:mysql://118.25.230.159:3306/wisp?useSSL=false&useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai");
+            dsc.setDriverName("com.mysql.jdbc.Driver");
+            dsc.setUsername("root");
+            dsc.setPassword("WHsunjee_2018");
+            mpg.setDataSource(dsc);
 
-        // 包配置
-        PackageConfig pc = new PackageConfig();
-        pc.setModuleName(scanner("模块名(eg:role)"));
-        pc.setParent(scanner("类名(eg:com.baomidou.ant)"));
-        mpg.setPackageInfo(pc);
+            // 包配置
+            PackageConfig pc = new PackageConfig();
+            pc.setModuleName(modelName);
+            pc.setParent(parentStr);
+            mpg.setPackageInfo(pc);
 
-        // 自定义配置
-        InjectionConfig cfg = new InjectionConfig() {
-            @Override
-            public void initMap() {
-                // to do nothing
-            }
-        };
-        List<FileOutConfig> focList = new ArrayList<>();
-        String finalRootPath = rootPath;
-        focList.add(new FileOutConfig("/templates/mapper.xml.ftl") {
-            @Override
-            public String outputFile(TableInfo tableInfo) {
-                // 自定义输入文件名称
-                return finalRootPath + "/resources/mapper/" + pc.getModuleName()
-                        + "/" + tableInfo.getEntityName() + "Mapper" + StringPool.DOT_XML;
-            }
-        });
-        cfg.setFileOutConfigList(focList);
-        mpg.setCfg(cfg);
-        mpg.setTemplate(new TemplateConfig().setXml(null));
-
-        // 策略配置
-        StrategyConfig strategy = new StrategyConfig();
-        strategy.setNaming(NamingStrategy.underline_to_camel);
-        strategy.setColumnNaming(NamingStrategy.underline_to_camel);
-     //   strategy.setSuperEntityClass("com.baomidou.ant.common.BaseEntity");
-        strategy.setEntityLombokModel(true);
-        strategy.setRestControllerStyle(true);
-      //  strategy.setSuperControllerClass("com.baomidou.ant.common.BaseController");
-        strategy.setInclude(scanner("表名"));
-        strategy.setSuperEntityColumns("id");
-        strategy.setControllerMappingHyphenStyle(true);
-        strategy.setTablePrefix(pc.getModuleName() + "_");
-        mpg.setStrategy(strategy);
-        mpg.setTemplateEngine(new FreemarkerTemplateEngine());
-        mpg.execute();
+            // 自定义配置
+            InjectionConfig cfg = new InjectionConfig() {
+                @Override
+                public void initMap() {
+                    // to do nothing
+                }
+            };
+            List<FileOutConfig> focList = new ArrayList<>();
+            String finalRootPath = rootPath;
+            focList.add(new FileOutConfig("/templates/mapper.xml.ftl") {
+                @Override
+                public String outputFile(TableInfo tableInfo) {
+                    // 自定义输入文件名称
+                    return finalRootPath + "/resources/mapper/" + pc.getModuleName()
+                            + "/" + tableInfo.getEntityName() + "Mapper" + StringPool.DOT_XML;
+                }
+            });
+            cfg.setFileOutConfigList(focList);
+            mpg.setCfg(cfg);
+            mpg.setTemplate(new TemplateConfig().setXml(null));
+            // 策略配置
+            StrategyConfig strategy = new StrategyConfig();
+            strategy.setNaming(NamingStrategy.underline_to_camel);
+            strategy.setColumnNaming(NamingStrategy.underline_to_camel);
+            strategy.setEntityLombokModel(true);
+            strategy.setRestControllerStyle(true);
+            strategy.setInclude(include);
+            // 忽略Id
+            strategy.setSuperEntityColumns("id");
+            strategy.setControllerMappingHyphenStyle(true);
+            strategy.setTablePrefix(pc.getModuleName() + "_");
+            mpg.setStrategy(strategy);
+            mpg.setTemplateEngine(new FreemarkerTemplateEngine());
+            mpg.execute();
+        }
     }
 
 }

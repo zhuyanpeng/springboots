@@ -1,6 +1,6 @@
-package com.study.www.role.service;
+package com.study.www.service;
 
-import com.study.www.role.entity.Role;
+import com.study.www.entity.UserRole;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author jobob
  * @since 2018-11-28
  */
-public interface IRoleService extends IService<Role> {
+public interface IUserRoleService extends IService<UserRole> {
 
 }

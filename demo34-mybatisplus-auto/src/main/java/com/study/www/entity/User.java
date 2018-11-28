@@ -1,4 +1,4 @@
-package com.study.www.role.entity;
+package com.study.www.entity;
 
 import java.io.Serializable;
 import lombok.Data;
@@ -16,19 +16,24 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public class Role implements Serializable {
+public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 角色名
+     * 姓名
      */
     private String name;
 
     /**
-     * 排序
+     * 年龄
      */
-    private Integer order;
+    private Integer age;
+
+    /**
+     * 称号
+     */
+    private String title;
 
 
 }

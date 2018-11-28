@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.study.www.mapper.UserMapper">
+
+    <resultMap type="com.study.www.entity.UserRoleVo" id="ResultMap">
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="age" property="age" jdbcType="INTEGER" />
+        <result column="title" property="title" jdbcType="VARCHAR" />
+        <collection property="roles" ofType="com.study.www.entity.Role"  resultMap="RoleResultMap" />
+    </resultMap>
+    <resultMap type="com.study.www.entity.Role" id="RoleResultMap">
+        <result column="roleName" property="name" jdbcType="VARCHAR" />
+        <result column="roleOrder" property="order" jdbcType="INTEGER" />
+    </resultMap>
+
+    <select id = "queryUserVoByUserId" resultMap="ResultMap" parameterType="java.lang.String" >
+      SELECT `user`.name,user.age,`user`.title,role.name as roleName,role.order as roleOrder
+       FROM user,user_role AS ur,role
+       WHERE `user`.id= #{userId,jdbcType=VARCHAR}
+       and ur.userId = `user`.id and ur.roleId = role.id
+    </select>
+</mapper>

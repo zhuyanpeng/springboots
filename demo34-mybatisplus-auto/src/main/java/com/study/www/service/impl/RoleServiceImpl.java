@@ -1,8 +1,8 @@
-package com.study.www.role.service.impl;
+package com.study.www.service.impl;
 
-import com.study.www.role.entity.Role;
-import com.study.www.role.mapper.RoleMapper;
-import com.study.www.role.service.IRoleService;
+import com.study.www.entity.Role;
+import com.study.www.mapper.RoleMapper;
+import com.study.www.service.IRoleService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
