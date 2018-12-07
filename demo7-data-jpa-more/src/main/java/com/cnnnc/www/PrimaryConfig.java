@@ -1,4 +1,4 @@
-package com.cnnnc.www.demo7logger;
+package com.cnnnc.www;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -18,7 +18,7 @@ import javax.sql.DataSource;
 import java.util.Map;
 
 /**
- * 作用说明：
+ * 作用说明： 数据池1
  *
  * @author mirror.zhuyanpeng
  * @create 2017-09-13 1:27
@@ -28,9 +28,10 @@ import java.util.Map;
 @EnableJpaRepositories(
         entityManagerFactoryRef = "entityManagerFactoryPrimary",
         transactionManagerRef = "transactionManagerPrimary",
-        basePackages = {"com.cnnnc.www.demo7logger.domain.user"}
+        basePackages = {"com.cnnnc.www.domain.user"} //mapper层目录
 )
 public class PrimaryConfig {
+
     @Autowired
     @Qualifier("primaryDataSource")
     private DataSource primaryDataSource;
@@ -41,19 +42,22 @@ public class PrimaryConfig {
     public EntityManager entityManager(EntityManagerFactoryBuilder builder){
         return entityManagerFactoryPrimary(builder).getObject().createEntityManager();
     }
+
     @Primary
     @Bean(name="entityManagerFactoryPrimary")
     public LocalContainerEntityManagerFactoryBean entityManagerFactoryPrimary(EntityManagerFactoryBuilder builder){
-        return  builder
+        LocalContainerEntityManagerFactoryBean primaryPersistenceUnit = builder
                 .dataSource(primaryDataSource)
                 .properties(getVendorProperties(primaryDataSource))
-                .packages("com.cnnnc.www.demo7logger.domain.user")
+                .packages("com.cnnnc.www.domain.user")
                 .persistenceUnit("primaryPersistenceUnit")
                 .build();
+        return  primaryPersistenceUnit;
     }
 
     @Autowired
     private JpaProperties jpaProperties;
+
 
     private Map<String,String> getVendorProperties(DataSource dataSource){
         return jpaProperties.getHibernateProperties(dataSource);

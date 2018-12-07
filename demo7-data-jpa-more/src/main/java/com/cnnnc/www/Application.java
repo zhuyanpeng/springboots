@@ -1,12 +1,12 @@
-package com.cnnnc.www.demo7logger;
+package com.cnnnc.www;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class Demo7LoggerApplication {
+public class Application {
 
 	public static void main(String[] args) {
-		SpringApplication.run(Demo7LoggerApplication.class, args);
+		SpringApplication.run(Application.class, args);
 	}
 }

@@ -1,4 +1,4 @@
-package com.cnnnc.www.demo7logger;
+package com.cnnnc.www;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;

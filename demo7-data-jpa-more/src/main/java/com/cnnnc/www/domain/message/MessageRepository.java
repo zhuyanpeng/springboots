@@ -1,15 +1,15 @@
-package com.cnnnc.www.demo7logger.domain.user;
+package com.cnnnc.www.domain.message;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 /**
- * 作用说明：持久层
+ * 作用说明：
  *
  * @author mirror.zhuyanpeng
- * @create 2017-09-13 0:56
+ * @create 2017-09-13 1:02
  **/
 @Repository
-public interface UserRepository extends JpaRepository<UserPO,Long>{
+public interface MessageRepository extends JpaRepository<MessagePO,Long>{
 
 }

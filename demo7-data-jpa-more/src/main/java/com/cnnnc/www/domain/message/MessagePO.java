@@ -1,16 +1,16 @@
-package com.cnnnc.www.demo7logger.domain.user;
+package com.cnnnc.www.domain.message;
 
 import javax.persistence.*;
 
 /**
- * 作用说明：用户对象
+ * 作用说明：
  *
  * @author mirror.zhuyanpeng
- * @create 2017-09-13 0:55
+ * @create 2017-09-13 1:01
  **/
 @Entity
-@Table(name="user")
-public class UserPO {
+//@Table(name = "message")
+public class MessagePO {
     @Id
     @GeneratedValue
     private Long id;
@@ -19,14 +19,14 @@ public class UserPO {
     private String name;
 
     @Column(nullable = false)
-    private Integer age;
+    private String content;
 
-    public UserPO() {
+    public MessagePO() {
     }
 
-    public UserPO(String name, Integer age) {
+    public MessagePO(String name, String content) {
         this.name = name;
-        this.age = age;
+        this.content = content;
     }
 
     public Long getId() {
@@ -45,11 +45,11 @@ public class UserPO {
         this.name = name;
     }
 
-    public Integer getAge() {
-        return age;
+    public String getContent() {
+        return content;
     }
 
-    public void setAge(Integer age) {
-        this.age = age;
+    public void setContent(String content) {
+        this.content = content;
     }
 }

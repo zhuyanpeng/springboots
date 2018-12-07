@@ -1,18 +1,18 @@
 package com.cnnnc.www.demo7logger;
 
-import com.cnnnc.www.demo7logger.domain.message.MessagePO;
-import com.cnnnc.www.demo7logger.domain.message.MessageRepository;
-import com.cnnnc.www.demo7logger.domain.user.UserPO;
-import com.cnnnc.www.demo7logger.domain.user.UserRepository;
+import com.cnnnc.www.domain.message.MessagePO;
+import com.cnnnc.www.domain.message.MessageRepository;
+import com.cnnnc.www.domain.user.UserPO;
+import com.cnnnc.www.domain.user.UserRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
-public class Demo7LoggerApplicationTests {
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringBootTest()
+public class ApplicationTests {
 
 	@Autowired
 	MessageRepository messageRepository;

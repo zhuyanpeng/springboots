@@ -1,4 +1,4 @@
-package com.cnnnc.www.demo7logger;
+package com.cnnnc.www;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -27,9 +27,10 @@ import java.util.Map;
 @EnableJpaRepositories(
         entityManagerFactoryRef = "entityManagerFactorySecondary",
         transactionManagerRef = "transactionManagerSecondary",
-        basePackages = {"com.cnnnc.www.demo7logger.domain.message"}
+        basePackages = {"com.cnnnc.www.domain.message"}
 )
 public class SecondayConfig {
+
     @Autowired
     @Qualifier("secondaryDataSource")
     private DataSource secondaryDataSource;
@@ -43,7 +44,7 @@ public class SecondayConfig {
         return builder
                 .dataSource(secondaryDataSource)
                 .properties(getVendorProperties(secondaryDataSource))
-                .packages("com.cnnnc.www.demo7logger.domain.message")
+                .packages("com.cnnnc.www.domain.message")
                 .persistenceUnit("secondaryPersistenceUnit")
                 .build();
     }
